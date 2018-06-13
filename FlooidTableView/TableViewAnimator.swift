@@ -12,23 +12,23 @@ import UIKit
 
 typealias AnimatorIdentifiers = (section:[String], data:[String:[String]])
 
-protocol TableViewAnimatorDataProvider: class {
+public protocol TableViewAnimatorDataProvider: class {
     func sectionIdentifier(in tableView: UITableView, at index: Int) -> String
     func cellIdentifier(in tableView: UITableView, at indexPath: IndexPath) -> String
     func reloadCell(in tableView: UITableView, forRowAt indexPath: IndexPath) -> Void
     func finishedReloadingCell(in tableView: UITableView, forRowAt indexPath: IndexPath) -> Void
 }
-extension TableViewAnimatorDataProvider {
+public extension TableViewAnimatorDataProvider {
     func reloadCell(in tableView: UITableView, forRowAt indexPath: IndexPath) -> Void {}
     func finishedReloadingCell(in tableView: UITableView, forRowAt indexPath: IndexPath) -> Void {}
 }
 
-class TableViewAnimator {
+public class TableViewAnimator {
     
     weak var tableView:UITableView!
     weak var dataProvider:TableViewAnimatorDataProvider!
     
-    init(for tableView:UITableView, with provider:TableViewAnimatorDataProvider) {
+    public init(for tableView:UITableView, with provider:TableViewAnimatorDataProvider) {
         self.dataProvider = provider
         self.tableView = tableView
         self.loadListIdentifiers(in: tableView)
@@ -57,7 +57,7 @@ class TableViewAnimator {
     }
     
     private var mustReload = false
-    func reloadData(with animation:UITableViewRowAnimation = .fade, otherAnimations:@escaping ()->Void = { }, completed:@escaping ()->Void = { }) {
+    public func reloadData(with animation:UITableViewRowAnimation = .fade, otherAnimations:@escaping ()->Void = { }, completed:@escaping ()->Void = { }) {
         
         self.mustReload = true
         DispatchQueue.main.async {

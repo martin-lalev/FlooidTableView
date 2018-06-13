@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-protocol CellProvider {
+public protocol CellProvider {
     
     func dequeue(in tableView: UITableView, at indexPath: IndexPath) -> UITableViewCell
     
@@ -23,7 +23,7 @@ protocol CellProvider {
 
 
 
-protocol CelledSectionProvider {
+public protocol CelledSectionProvider {
     
     var sectionIdentifier: String { get }
     
@@ -43,18 +43,18 @@ extension CelledSectionProvider {
     
 }
 
-struct CelledSection: SectionProvider {
+public struct CelledSection: SectionProvider {
     
     let sectionIdentifier:String
     let provider:CelledSectionProvider
     
-    init(in tableView: UITableView, _ sectionIdentifier:String, with provider:CelledSectionProvider) {
+    public init(in tableView: UITableView, _ sectionIdentifier:String, with provider:CelledSectionProvider) {
         self.sectionIdentifier = sectionIdentifier
         self.provider = provider
         self.registerCells(in: tableView)
     }
     
-    func registerCells(in tableView: UITableView) -> Void {
+    public func registerCells(in tableView: UITableView) -> Void {
         self.provider.registerCells(in: tableView)
     }
     
@@ -70,15 +70,15 @@ struct CelledSection: SectionProvider {
         return self.provider.cellProvider(at: indexPath.row).height(in:tableView, at:indexPath)
     }
     
-    func reloadCell(in tableView: UITableView, at indexPath: IndexPath) -> Void {
+    public func reloadCell(in tableView: UITableView, at indexPath: IndexPath) -> Void {
         self.provider.cellProvider(at: indexPath.row).reload(in:tableView, at:indexPath)
     }
     
-    func sectionIdentifier(in tableView: UITableView) -> String {
+    public func sectionIdentifier(in tableView: UITableView) -> String {
         return self.sectionIdentifier
     }
     
-    func cellIdentifier(in tableView: UITableView, at indexPath: IndexPath) -> String {
+    public func cellIdentifier(in tableView: UITableView, at indexPath: IndexPath) -> String {
         return self.provider.cellProvider(at: indexPath.row).identifier(in:tableView, at:indexPath)
     }
     

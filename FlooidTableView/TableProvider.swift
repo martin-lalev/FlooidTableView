@@ -9,14 +9,14 @@
 import Foundation
 import UIKit
 
-protocol TableProviderDelegate: class {
+public protocol TableProviderDelegate: class {
     func sectionProvider(in tableView:UITableView, at index:Int) -> SectionProvider
     func numberOfSections(in tableView: UITableView) -> Int
 }
 
-class TableProvider: NSObject {
+public class TableProvider: NSObject {
     weak var delegate: TableProviderDelegate!
-    init(for tableView:UITableView, delegate:TableProviderDelegate) {
+    public init(for tableView:UITableView, delegate:TableProviderDelegate) {
         self.delegate = delegate
         
         super.init()
@@ -27,7 +27,7 @@ class TableProvider: NSObject {
     }
 }
 
-extension TableProvider: UITableViewDataSource , UITableViewDelegate, TableViewAnimatorDataProvider {
+public extension TableProvider: UITableViewDataSource , UITableViewDelegate, TableViewAnimatorDataProvider {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return self.delegate.numberOfSections(in:tableView)

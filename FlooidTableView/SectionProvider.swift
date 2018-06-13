@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-protocol SectionProvider {
+public protocol SectionProvider {
     
     func numberOfRows(in tableView: UITableView) -> Int
     
