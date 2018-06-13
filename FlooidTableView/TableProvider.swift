@@ -27,33 +27,33 @@ public class TableProvider: NSObject {
     }
 }
 
-public extension TableProvider: UITableViewDataSource , UITableViewDelegate, TableViewAnimatorDataProvider {
+extension TableProvider: UITableViewDataSource , UITableViewDelegate, TableViewAnimatorDataProvider {
     
-    func numberOfSections(in tableView: UITableView) -> Int {
+    public func numberOfSections(in tableView: UITableView) -> Int {
         return self.delegate.numberOfSections(in:tableView)
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.delegate.sectionProvider(in: tableView, at: section).numberOfRows(in: tableView)
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         return self.delegate.sectionProvider(in: tableView, at: indexPath.section).cellForRow(in: tableView, at: indexPath)
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return self.delegate.sectionProvider(in: tableView, at: indexPath.section).heightForCell(in: tableView, at: indexPath)
     }
     
-    func sectionIdentifier(in tableView: UITableView, at index: Int) -> String {
+    public func sectionIdentifier(in tableView: UITableView, at index: Int) -> String {
         return self.delegate.sectionProvider(in: tableView, at: index).sectionIdentifier(in: tableView)
     }
     
-    func cellIdentifier(in tableView: UITableView, at indexPath: IndexPath) -> String {
+    public func cellIdentifier(in tableView: UITableView, at indexPath: IndexPath) -> String {
         return self.delegate.sectionProvider(in: tableView, at: indexPath.section).cellIdentifier(in: tableView, at: indexPath)
     }
     
-    func reloadCell(in tableView: UITableView, forRowAt indexPath: IndexPath) -> Void {
+    public func reloadCell(in tableView: UITableView, forRowAt indexPath: IndexPath) -> Void {
         self.delegate.sectionProvider(in: tableView, at: indexPath.section).reloadCell(in: tableView, at: indexPath)
     }
     
