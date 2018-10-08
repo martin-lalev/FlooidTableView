@@ -1,57 +1,27 @@
 //
-//  CellProvider.swift
+//  FlooidTableViewSection.swift
 //  FlooidTableView
 //
-//  Created by Martin Lalev on 13.06.18.
+//  Created by Martin Lalev on 27.08.18.
 //  Copyright © 2018 Martin Lalev. All rights reserved.
 //
 
 import Foundation
 import UIKit
 
-public protocol CellProvider {
+public struct FlooidTableViewSection: SectionProvider {
     
-    func dequeue(in tableView: UITableView, at indexPath: IndexPath) -> UITableViewCell
+    let sectionIdentifier: String
+    public internal(set) var provider: CelledSectionProvider
     
-    func height(in tableView: UITableView, at indexPath: IndexPath) -> CGFloat
-    
-    func identifier(in tableView: UITableView, at indexPath: IndexPath) -> String
-    
-    func reload(in tableView: UITableView, at indexPath: IndexPath) -> Void
-    
-}
-
-
-
-public protocol CelledSectionProvider {
-    
-    var sectionIdentifier: String { get }
-    
-    var numberOfRows: Int { get }
-    
-    func cellProvider(at row:Int) -> CellProvider
-    
-    func registerCells(in tableView: UITableView) -> Void
-    
-}
-
-extension CelledSectionProvider {
-    
-    public func sectionProvider(in tableView:UITableView) -> CelledSection {
-        return CelledSection(in: tableView, self.sectionIdentifier, with: self)
-    }
-    
-}
-
-public struct CelledSection: SectionProvider {
-    
-    let sectionIdentifier:String
-    let provider:CelledSectionProvider
-    
-    public init(in tableView: UITableView, _ sectionIdentifier:String, with provider:CelledSectionProvider) {
+    public init(in tableView: UITableView, _ sectionIdentifier:String, with provider: CelledSectionProvider) {
         self.sectionIdentifier = sectionIdentifier
         self.provider = provider
         self.registerCells(in: tableView)
+    }
+    
+    public mutating func updateProvider(to provider: CelledSectionProvider) {
+        self.provider = provider
     }
     
     public func registerCells(in tableView: UITableView) -> Void {

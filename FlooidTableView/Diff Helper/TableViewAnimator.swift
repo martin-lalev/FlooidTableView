@@ -57,7 +57,7 @@ public class TableViewAnimator {
     }
     
     private var mustReload = false
-    public func reloadData(with animation:UITableViewRowAnimation = .fade, otherAnimations:@escaping ()->Void = { }, completed:@escaping ()->Void = { }) {
+    public func reloadData(with animation:UITableView.RowAnimation = .fade, otherAnimations:@escaping ()->Void = { }, completed:@escaping ()->Void = { }) {
         
         self.mustReload = true
         DispatchQueue.main.async {
@@ -85,7 +85,7 @@ public class TableViewAnimator {
 
 extension UITableView {
     
-    func animateChanges(from:AnimatorIdentifiers, to:AnimatorIdentifiers, animation:UITableViewRowAnimation = .fade, otherAnimations:@escaping ()->Void = { }, completed:@escaping ()->Void = { }) {
+    func animateChanges(from:AnimatorIdentifiers, to:AnimatorIdentifiers, animation:UITableView.RowAnimation = .fade, otherAnimations:@escaping ()->Void = { }, completed:@escaping ()->Void = { }) {
         
         CATransaction.begin()
         CATransaction.setCompletionBlock(completed)
@@ -108,8 +108,54 @@ extension UITableView {
         
     }
     
+//    @discardableResult
+//    func animateChanges(from sections_old:[String], to sections_new:[String], rowAnimation:UITableView.RowAnimation) -> [String] {
+//
+//        let operations = diff(sections_old, sections_new)
+//
+//        var reloadItems:[String] = [];
+//
+//        for operation in operations {
+//            switch operation {
+//            case .delete(let index):
+//                self.deleteSections(IndexSet.init(integer: index), with: rowAnimation)
+//            case .insert(let index):
+//                self.insertSections(IndexSet.init(integer: index), with: rowAnimation)
+//            case .move(let from, let to):
+//                self.moveSection(from, toSection: to)
+//            case .update(let index):
+//                reloadItems.append(sections_new[index])
+//            }
+//        }
+//
+//        return reloadItems;
+//    }
+//
+//    @discardableResult
+//    func animateChanges(in section:Int, from sourceData_old:[String], to sourceData_new:[String], rowAnimation:UITableView.RowAnimation) -> [IndexPath] {
+//
+//        let operations = diff(sourceData_old, sourceData_new)
+//
+//        var reloadIndexPaths:[IndexPath] = []
+//
+//        for operation in operations {
+//            switch operation {
+//            case .delete(let index):
+//                self.deleteRows(at: [IndexPath(row: index, section: section)], with: rowAnimation)
+//            case .insert(let index):
+//                self.insertRows(at: [IndexPath(row: index, section: section)], with: rowAnimation)
+//            case .move(let from, let to):
+//                self.moveRow(at: IndexPath(row: from, section: section), to: IndexPath(row: to, section: section))
+//            case .update(let index):
+//                reloadIndexPaths.append(IndexPath(row: index, section: section))
+//            }
+//        }
+//
+//        return reloadIndexPaths;
+//    }
+    
     @discardableResult
-    func animateChanges(from sections_old:[String], to sections_new:[String], rowAnimation:UITableViewRowAnimation) -> [String] {
+    func animateChanges(from sections_old:[String], to sections_new:[String], rowAnimation:UITableView.RowAnimation) -> [String] {
         
         // REMOVE ITEMS
         var removedItems = Set.init(sections_old); removedItems.subtract(sections_new)
@@ -150,7 +196,7 @@ extension UITableView {
     }
     
     @discardableResult
-    func animateChanges(in section:Int, from sourceData_old:[String], to sourceData_new:[String], rowAnimation:UITableViewRowAnimation) -> [IndexPath] {
+    func animateChanges(in section:Int, from sourceData_old:[String], to sourceData_new:[String], rowAnimation:UITableView.RowAnimation) -> [IndexPath] {
         
         
         // REMOVE ITEMS
