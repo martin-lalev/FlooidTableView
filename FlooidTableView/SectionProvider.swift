@@ -9,20 +9,52 @@
 import Foundation
 import UIKit
 
-public protocol SectionProvider {
+public class SectionProvider {
     
-    func numberOfRows(in tableView: UITableView) -> Int
+    public var sectionIdentifier: String
+    var cellProviders: [CellProvider] = []
     
-    func cellForRow(in tableView: UITableView, at indexPath: IndexPath) -> UITableViewCell
+    let providersLoader: (SectionProvider)->Void
     
-    func heightForCell(in tableView: UITableView, at indexPath: IndexPath) -> CGFloat
+    public init(_ identifier: String, providersLoader: @escaping (SectionProvider)->Void) {
+        self.sectionIdentifier = identifier
+        self.providersLoader = providersLoader
+        self.reload()
+    }
     
-    func sectionIdentifier(in tableView: UITableView) -> String
+    public func reload() {
+        self.cellProviders.removeAll()
+        self.providersLoader(self)
+    }
     
-    func cellIdentifier(in tableView: UITableView, at indexPath: IndexPath) -> String
     
-    func reloadCell(in tableView: UITableView, at indexPath: IndexPath) -> Void
+    public func numberOfRows(in tableView: UITableView) -> Int {
+        return self.cellProviders.count
+    }
     
-    func registerCells(in tableView: UITableView) -> Void
+    public func cellForRow(in tableView: UITableView, at indexPath: IndexPath) -> UITableViewCell {
+        return self.cellProviders[indexPath.row].dequeue(in:tableView, at:indexPath)
+    }
     
+    public func heightForCell(in tableView: UITableView, at indexPath: IndexPath) -> CGFloat {
+        return self.cellProviders[indexPath.row].height(in:tableView, at:indexPath)
+    }
+    
+    public func reloadCell(in tableView: UITableView, at indexPath: IndexPath) -> Void {
+        self.cellProviders[indexPath.row].reload(in:tableView, at:indexPath)
+    }
+    
+    public func sectionIdentifier(in tableView: UITableView) -> String {
+        return self.sectionIdentifier
+    }
+    
+    public func cellIdentifier(in tableView: UITableView, at indexPath: IndexPath) -> String {
+        return self.cellProviders[indexPath.row].identifier(in:tableView, at:indexPath)
+    }
+}
+
+extension CellProvider {
+    public func add(to arraySectionProviders: SectionProvider) {
+        arraySectionProviders.cellProviders.append(self)
+    }
 }

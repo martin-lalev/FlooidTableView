@@ -9,52 +9,64 @@
 import Foundation
 import UIKit
 
-public protocol TableProviderDelegate: class {
-    func sectionProvider(in tableView:UITableView, at index:Int) -> SectionProvider
-    func numberOfSections(in tableView: UITableView) -> Int
-}
-
-public class TableProvider: NSObject {
-    weak var delegate: TableProviderDelegate!
-    public init(for tableView:UITableView, delegate:TableProviderDelegate) {
-        self.delegate = delegate
-        
+public class TableProvider: NSObject, UITableViewDataSource, UITableViewDelegate, TableViewAnimatorDataProvider {
+    
+    
+    var sections: [SectionProvider] = []
+    
+    let tableLoader: (TableProvider) -> Void
+    
+    public init(tableLoader: @escaping (TableProvider) -> Void) {
+        self.tableLoader = tableLoader
         super.init()
-        
-        tableView.dataSource = self
-        tableView.delegate = self
-        
+        self.reload()
     }
-}
+    
+    public func reload() {
+        self.sections.removeAll()
+        self.tableLoader(self)
+    }
 
-extension TableProvider: UITableViewDataSource , UITableViewDelegate, TableViewAnimatorDataProvider {
     
     public func numberOfSections(in tableView: UITableView) -> Int {
-        return self.delegate.numberOfSections(in:tableView)
+        return self.sections.count
     }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.delegate.sectionProvider(in: tableView, at: section).numberOfRows(in: tableView)
+        return self.sections[section].numberOfRows(in: tableView)
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return self.delegate.sectionProvider(in: tableView, at: indexPath.section).cellForRow(in: tableView, at: indexPath)
+        return self.sections[indexPath.section].cellForRow(in: tableView, at: indexPath)
     }
     
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return self.delegate.sectionProvider(in: tableView, at: indexPath.section).heightForCell(in: tableView, at: indexPath)
+        return self.sections[indexPath.section].heightForCell(in: tableView, at: indexPath)
     }
     
     public func sectionIdentifier(in tableView: UITableView, at index: Int) -> String {
-        return self.delegate.sectionProvider(in: tableView, at: index).sectionIdentifier(in: tableView)
+        return self.sections[index].sectionIdentifier(in: tableView)
     }
     
     public func cellIdentifier(in tableView: UITableView, at indexPath: IndexPath) -> String {
-        return self.delegate.sectionProvider(in: tableView, at: indexPath.section).cellIdentifier(in: tableView, at: indexPath)
+        return self.sections[indexPath.section].cellIdentifier(in: tableView, at: indexPath)
     }
     
     public func reloadCell(in tableView: UITableView, forRowAt indexPath: IndexPath) -> Void {
-        self.delegate.sectionProvider(in: tableView, at: indexPath.section).reloadCell(in: tableView, at: indexPath)
+        self.sections[indexPath.section].reloadCell(in: tableView, at: indexPath)
     }
     
+}
+
+extension SectionProvider {
+    public func add(to tableProvider: TableProvider) {
+        tableProvider.sections.append(self)
+    }
+}
+
+extension UITableView {
+    public func provided(by provider: TableProvider) {
+        self.dataSource = provider
+        self.delegate = provider
+    }
 }
