@@ -54,7 +54,13 @@ public class SectionProvider {
 }
 
 extension CellProvider {
-    public func add(to arraySectionProviders: SectionProvider) {
-        arraySectionProviders.cellProviders.append(self)
+    public func add(to sectionProviders: SectionProvider) {
+        sectionProviders.cellProviders.append(self)
+    }
+}
+
+extension Sequence where Element: CellProvider {
+    public func add(to sectionProvider: SectionProvider) {
+        for p in self { p.add(to: sectionProvider) }
     }
 }

@@ -64,6 +64,12 @@ extension SectionProvider {
     }
 }
 
+extension Sequence where Element: SectionProvider {
+    public func add(to tableProvider: TableProvider) {
+        for p in self { p.add(to: tableProvider) }
+    }
+}
+
 extension UITableView {
     public func provided(by provider: TableProvider) {
         self.dataSource = provider
