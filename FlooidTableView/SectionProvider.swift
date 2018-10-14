@@ -59,6 +59,12 @@ extension CellProvider {
     }
 }
 
+extension Sequence where Element == CellProvider {
+    public func add(to sectionProvider: SectionProvider) {
+        for p in self { p.add(to: sectionProvider) }
+    }
+}
+
 extension Sequence where Element: CellProvider {
     public func add(to sectionProvider: SectionProvider) {
         for p in self { p.add(to: sectionProvider) }
