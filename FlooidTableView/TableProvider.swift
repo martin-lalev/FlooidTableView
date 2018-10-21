@@ -9,9 +9,13 @@
 import Foundation
 import UIKit
 
+public protocol TableProviderScrollDelegate: class {
+    func scrollViewDidScroll(_ scrollView: UIScrollView)
+}
+
 public class TableProvider: NSObject, UITableViewDataSource, UITableViewDelegate, TableViewAnimatorDataProvider {
     
-    
+    public var scrollDelegate: TableProviderScrollDelegate?
     var sections: [SectionProvider] = []
     
     let tableLoader: (TableProvider) -> Void
@@ -56,6 +60,12 @@ public class TableProvider: NSObject, UITableViewDataSource, UITableViewDelegate
         self.sections[indexPath.section].reloadCell(in: tableView, at: indexPath)
     }
     
+}
+
+extension TableProvider {
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        self.scrollDelegate?.scrollViewDidScroll(scrollView)
+    }
 }
 
 extension SectionProvider {
