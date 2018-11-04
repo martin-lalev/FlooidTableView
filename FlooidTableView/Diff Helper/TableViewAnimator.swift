@@ -68,12 +68,11 @@ public class TableViewAnimator {
             self.loadListIdentifiers(in: self.tableView)
             let new:AnimatorIdentifiers = self.copyListIdentifiers()
             
-            self.tableView.animateChanges(from: old, to: new, animation: .fade, otherAnimations: {
-                for indexPath in self.tableView.indexPathsForVisibleRows ?? [] {
+            self.tableView.animateChanges(from: old, to: new, animation: .fade, reloadCells: {
+                for indexPath in $0 {
                     self.dataProvider.reloadCell(in: self.tableView, forRowAt: indexPath)
                 }
-                otherAnimations()
-            }, completed: {
+            }, otherAnimations: otherAnimations, completed: {
                 for indexPath in self.tableView.indexPathsForVisibleRows ?? [] {
                     self.dataProvider.finishedReloadingCell(in: self.tableView, forRowAt: indexPath)
                 }
@@ -85,7 +84,7 @@ public class TableViewAnimator {
 
 extension UITableView {
     
-    func animateChanges(from:AnimatorIdentifiers, to:AnimatorIdentifiers, animation:UITableView.RowAnimation = .fade, otherAnimations:@escaping ()->Void = { }, completed:@escaping ()->Void = { }) {
+    func animateChanges(from:AnimatorIdentifiers, to:AnimatorIdentifiers, animation:UITableView.RowAnimation = .fade, reloadCells: @escaping ([IndexPath]) -> Void = { _ in }, otherAnimations:@escaping ()->Void = { }, completed:@escaping ()->Void = { }) {
         
         CATransaction.begin()
         CATransaction.setCompletionBlock(completed)
@@ -93,9 +92,11 @@ extension UITableView {
         
         self.beginUpdates()
         let reloadSections = self.animateChanges(from: from.section, to: to.section, rowAnimation: animation)
+        var reloadIndexPaths: [IndexPath] = []
         for sectionIdentifier in reloadSections {
-            self.animateChanges(in: to.section.index(of: sectionIdentifier)!, from: from.data[sectionIdentifier]!, to: to.data[sectionIdentifier]!, rowAnimation: animation)
+            reloadIndexPaths.append(contentsOf: self.animateChanges(in: to.section.index(of: sectionIdentifier)!, from: from.data[sectionIdentifier]!, to: to.data[sectionIdentifier]!, rowAnimation: animation))
         }
+        reloadCells(reloadIndexPaths)
         self.endUpdates()
         
         
