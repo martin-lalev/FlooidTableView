@@ -94,7 +94,7 @@ extension UITableView {
         self.beginUpdates()
         let reloadSections = self.animateChanges(from: from.section, to: to.section, rowAnimation: animation)
         for sectionIdentifier in reloadSections {
-            self.animateChanges(in: to.section.index(of: sectionIdentifier)!, from: from.data[sectionIdentifier]!, to: to.data[sectionIdentifier]!, rowAnimation: animation)
+            self.animateChanges(in: to.section.firstIndex(of: sectionIdentifier)!, from: from.data[sectionIdentifier]!, to: to.data[sectionIdentifier]!, rowAnimation: animation)
         }
         self.endUpdates()
         
@@ -161,7 +161,7 @@ extension UITableView {
         var removedItems = Set.init(sections_old); removedItems.subtract(sections_new)
         var removedIndexSet = IndexSet()
         for identifier in removedItems {
-            if let index = sections_old.index(of: identifier) {
+            if let index = sections_old.firstIndex(of: identifier) {
                 removedIndexSet.insert(index)
             }
         }
@@ -185,7 +185,7 @@ extension UITableView {
         var reloadItems:[String] = [];
         for i in 0 ..< sections_new.count {
             guard !addedItems.contains(sections_new[i]) else { continue }
-            guard let j = sections_old.index(of: sections_new[i]) else { continue }
+            guard let j = sections_old.firstIndex(of: sections_new[i]) else { continue }
             if (i != j) {
                 self.moveSection(j, toSection: i)
             }
@@ -203,7 +203,7 @@ extension UITableView {
         var removedItems = Set.init(sourceData_old); removedItems.subtract(sourceData_new);
         var removedIndexPaths:[IndexPath] = []
         for identifier in removedItems {
-            if let index = sourceData_old.index(of: identifier) {
+            if let index = sourceData_old.firstIndex(of: identifier) {
                 removedIndexPaths.append(IndexPath(row: index, section: section))
             }
         }
@@ -225,7 +225,7 @@ extension UITableView {
         var reloadIndexPaths:[IndexPath] = [];
         for i in 0 ..< sourceData_new.count {
             guard !addedItems.contains(sourceData_new[i]) else { continue }
-            guard let j = sourceData_old.index(of: sourceData_new[i]) else { continue }
+            guard let j = sourceData_old.firstIndex(of: sourceData_new[i]) else { continue }
             if i != j {
                 self.moveRow(at: IndexPath(row: j, section: section), to: IndexPath(row: i, section: section))
             }
