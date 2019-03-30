@@ -60,6 +60,14 @@ public class TableProvider: NSObject, UITableViewDataSource, UITableViewDelegate
         self.sections[indexPath.section].reloadCell(in: tableView, at: indexPath)
     }
     
+    public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        self.sections[indexPath.section].willShow(cell, in: tableView, at: indexPath)
+    }
+    
+    public func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        self.sections[indexPath.section].didHide(cell, in: tableView, at: indexPath)
+    }
+    
 }
 
 extension TableProvider {

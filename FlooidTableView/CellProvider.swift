@@ -19,6 +19,10 @@ public protocol CellProvider {
     
     func reload(in tableView: UITableView, at indexPath: IndexPath) -> Void
     
+    func willShow(_ cell: UITableViewCell, in tableView: UITableView, at indexPath: IndexPath) -> Void
+    
+    func didHide(_ cell: UITableViewCell, in tableView: UITableView, at indexPath: IndexPath) -> Void
+
 }
 
 extension UITableViewCell {
@@ -30,13 +34,17 @@ extension UITableViewCell {
 public class AnyCellProvider<CellType: UITableViewCell>: CellProvider {
     
     let setup: (CellType)->Void
+    let willShow: (CellType)->Void
+    let didHide: (CellType)->Void
     let height: CGFloat
     let identifier: String
     
-    public init(identifier: String, height: CGFloat, setup: @escaping (CellType)->Void) {
+    public init(identifier: String, height: CGFloat, willShow: @escaping (CellType)->Void = { _ in }, didHide: @escaping (CellType)->Void = { _ in }, setup: @escaping (CellType)->Void) {
         self.identifier = identifier
         self.height = height
         self.setup = setup
+        self.willShow = willShow
+        self.didHide = didHide
     }
     
     public func dequeue(in tableView: UITableView, at indexPath: IndexPath) -> UITableViewCell {
@@ -58,4 +66,14 @@ public class AnyCellProvider<CellType: UITableViewCell>: CellProvider {
         return self.identifier
     }
     
+    public func willShow(_ cell: UITableViewCell, in tableView: UITableView, at indexPath: IndexPath) -> Void {
+        guard let cell = cell as? CellType else { return }
+        self.willShow(cell)
+    }
+    
+    public func didHide(_ cell: UITableViewCell, in tableView: UITableView, at indexPath: IndexPath) -> Void {
+        guard let cell = cell as? CellType else { return }
+        self.didHide(cell)
+    }
+
 }

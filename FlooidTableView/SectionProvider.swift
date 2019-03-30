@@ -51,6 +51,16 @@ public class SectionProvider {
     public func cellIdentifier(in tableView: UITableView, at indexPath: IndexPath) -> String {
         return self.cellProviders[indexPath.row].identifier(in:tableView, at:indexPath)
     }
+    
+    public func willShow(_ cell: UITableViewCell, in tableView: UITableView, at indexPath: IndexPath) -> Void {
+        guard indexPath.row < self.cellProviders.count else { return }
+        self.cellProviders[indexPath.row].willShow(cell, in: tableView, at: indexPath)
+    }
+    
+    public func didHide(_ cell: UITableViewCell, in tableView: UITableView, at indexPath: IndexPath) -> Void {
+        guard indexPath.row < self.cellProviders.count else { return }
+        self.cellProviders[indexPath.row].didHide(cell, in: tableView, at: indexPath)
+    }
 }
 
 extension CellProvider {
