@@ -15,7 +15,7 @@ public protocol TableProviderScrollDelegate: class {
 
 public class TableProvider: NSObject, UITableViewDataSource, UITableViewDelegate, TableViewAnimatorDataProvider {
     
-    public var scrollDelegate: TableProviderScrollDelegate?
+    public weak var scrollDelegate: TableProviderScrollDelegate?
     var sections: [SectionProvider] = []
     
     let tableLoader: (TableProvider) -> Void
