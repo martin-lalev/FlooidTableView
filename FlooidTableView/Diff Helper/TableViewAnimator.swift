@@ -105,6 +105,8 @@ extension UITableView {
         UIView.animate(withDuration: duration, delay: 0, options: [.allowUserInteraction], animations: {
             otherAnimations();
         }) { _ in }
+        self.beginUpdates()
+        self.endUpdates()
         
     }
     
