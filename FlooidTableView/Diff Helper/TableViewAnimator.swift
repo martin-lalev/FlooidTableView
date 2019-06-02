@@ -200,3 +200,21 @@ extension UITableView {
     }
     
 }
+
+
+
+extension TableProvider: TableViewAnimatorDataProvider {
+    
+    public func sectionIdentifier(in tableView: UITableView, at index: Int) -> String {
+        return self.sections[index].sectionIdentifier(in: tableView)
+    }
+    
+    public func cellIdentifier(in tableView: UITableView, at indexPath: IndexPath) -> String {
+        return self.sections[indexPath.section].cellIdentifier(in: tableView, at: indexPath)
+    }
+    
+    public func reloadCell(in tableView: UITableView, forRowAt indexPath: IndexPath) -> Void {
+        self.sections[indexPath.section].reloadCell(in: tableView, at: indexPath)
+    }
+    
+}

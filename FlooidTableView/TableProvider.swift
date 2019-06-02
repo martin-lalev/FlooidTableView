@@ -13,7 +13,7 @@ public protocol TableProviderScrollDelegate: class {
     func scrollViewDidScroll(_ scrollView: UIScrollView)
 }
 
-public class TableProvider: NSObject, UITableViewDataSource, UITableViewDelegate, TableViewAnimatorDataProvider {
+public class TableProvider: NSObject, UITableViewDataSource, UITableViewDelegate {
     
     public weak var scrollDelegate: TableProviderScrollDelegate?
     var sections: [SectionProvider] = []
@@ -50,18 +50,6 @@ public class TableProvider: NSObject, UITableViewDataSource, UITableViewDelegate
     
     public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return self.sections[indexPath.section].estimatedHeightForCell(in: tableView, at: indexPath)
-    }
-    
-    public func sectionIdentifier(in tableView: UITableView, at index: Int) -> String {
-        return self.sections[index].sectionIdentifier(in: tableView)
-    }
-    
-    public func cellIdentifier(in tableView: UITableView, at indexPath: IndexPath) -> String {
-        return self.sections[indexPath.section].cellIdentifier(in: tableView, at: indexPath)
-    }
-    
-    public func reloadCell(in tableView: UITableView, forRowAt indexPath: IndexPath) -> Void {
-        self.sections[indexPath.section].reloadCell(in: tableView, at: indexPath)
     }
     
     public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
