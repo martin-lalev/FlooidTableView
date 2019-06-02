@@ -38,17 +38,20 @@ public class AnyCellProvider<CellType: UITableViewCell>: CellProvider {
     let setup: (CellType)->Void
     let willShow: (CellType)->Void
     let didHide: (CellType)->Void
-    let height: CGFloat
+    let height: (UITableView) -> CGFloat
     let heightEstimation: ((UITableView) -> CGFloat)?
     let identifier: String
     
-    public init(identifier: String, height: CGFloat, heightEstimation: ((UITableView) -> CGFloat)? = nil, willShow: @escaping (CellType)->Void = { _ in }, didHide: @escaping (CellType)->Void = { _ in }, setup: @escaping (CellType)->Void) {
+    public init(identifier: String, height: @escaping (UITableView) -> CGFloat, heightEstimation: ((UITableView) -> CGFloat)? = nil, willShow: @escaping (CellType)->Void = { _ in }, didHide: @escaping (CellType)->Void = { _ in }, setup: @escaping (CellType)->Void) {
         self.identifier = identifier
         self.height = height
         self.heightEstimation = heightEstimation
         self.setup = setup
         self.willShow = willShow
         self.didHide = didHide
+    }
+    public convenience init(identifier: String, height: CGFloat, heightEstimation: ((UITableView) -> CGFloat)? = nil, willShow: @escaping (CellType)->Void = { _ in }, didHide: @escaping (CellType)->Void = { _ in }, setup: @escaping (CellType)->Void) {
+        self.init(identifier: identifier, height: { _ in height }, heightEstimation: heightEstimation, willShow: willShow, didHide: didHide, setup: setup)
     }
     
     public func dequeue(in tableView: UITableView, at indexPath: IndexPath) -> UITableViewCell {
@@ -63,11 +66,11 @@ public class AnyCellProvider<CellType: UITableViewCell>: CellProvider {
     }
     
     public func height(in tableView: UITableView, at indexPath: IndexPath) -> CGFloat {
-        return self.height
+        return self.height(tableView)
     }
     
     public func estimatedHeight(in tableView: UITableView, at indexPath: IndexPath) -> CGFloat {
-        return self.heightEstimation?(tableView) ?? self.height
+        return self.heightEstimation?(tableView) ?? self.height(tableView)
     }
     
     public func identifier(in tableView: UITableView, at indexPath: IndexPath) -> String {
