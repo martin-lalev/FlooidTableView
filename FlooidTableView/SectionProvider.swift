@@ -40,6 +40,10 @@ public class SectionProvider {
         return self.cellProviders[indexPath.row].height(in:tableView, at:indexPath)
     }
     
+    public func estimatedHeightForCell(in tableView: UITableView, at indexPath: IndexPath) -> CGFloat {
+        return self.cellProviders[indexPath.row].estimatedHeight(in:tableView, at:indexPath)
+    }
+    
     public func reloadCell(in tableView: UITableView, at indexPath: IndexPath) -> Void {
         self.cellProviders[indexPath.row].reload(in:tableView, at:indexPath)
     }

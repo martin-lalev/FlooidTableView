@@ -15,6 +15,8 @@ public protocol CellProvider {
     
     func height(in tableView: UITableView, at indexPath: IndexPath) -> CGFloat
     
+    func estimatedHeight(in tableView: UITableView, at indexPath: IndexPath) -> CGFloat
+    
     func identifier(in tableView: UITableView, at indexPath: IndexPath) -> String
     
     func reload(in tableView: UITableView, at indexPath: IndexPath) -> Void
@@ -37,11 +39,13 @@ public class AnyCellProvider<CellType: UITableViewCell>: CellProvider {
     let willShow: (CellType)->Void
     let didHide: (CellType)->Void
     let height: CGFloat
+    let heightEstimation: ((UITableView) -> CGFloat)?
     let identifier: String
     
-    public init(identifier: String, height: CGFloat, willShow: @escaping (CellType)->Void = { _ in }, didHide: @escaping (CellType)->Void = { _ in }, setup: @escaping (CellType)->Void) {
+    public init(identifier: String, height: CGFloat, heightEstimation: ((UITableView) -> CGFloat)? = nil, willShow: @escaping (CellType)->Void = { _ in }, didHide: @escaping (CellType)->Void = { _ in }, setup: @escaping (CellType)->Void) {
         self.identifier = identifier
         self.height = height
+        self.heightEstimation = heightEstimation
         self.setup = setup
         self.willShow = willShow
         self.didHide = didHide
@@ -60,6 +64,10 @@ public class AnyCellProvider<CellType: UITableViewCell>: CellProvider {
     
     public func height(in tableView: UITableView, at indexPath: IndexPath) -> CGFloat {
         return self.height
+    }
+    
+    public func estimatedHeight(in tableView: UITableView, at indexPath: IndexPath) -> CGFloat {
+        return self.heightEstimation?(tableView) ?? self.height
     }
     
     public func identifier(in tableView: UITableView, at indexPath: IndexPath) -> String {

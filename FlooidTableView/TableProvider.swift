@@ -48,6 +48,10 @@ public class TableProvider: NSObject, UITableViewDataSource, UITableViewDelegate
         return self.sections[indexPath.section].heightForCell(in: tableView, at: indexPath)
     }
     
+    public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return self.sections[indexPath.section].estimatedHeightForCell(in: tableView, at: indexPath)
+    }
+    
     public func sectionIdentifier(in tableView: UITableView, at index: Int) -> String {
         return self.sections[index].sectionIdentifier(in: tableView)
     }
