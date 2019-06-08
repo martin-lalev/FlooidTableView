@@ -9,12 +9,6 @@
 import Foundation
 import UIKit
 
-extension UITableViewCell {
-    public static func register(in tableView:UITableView) {
-        tableView.register(self, forCellReuseIdentifier: self.description())
-    }
-}
-
 public protocol CellProvider {
     
     var identifier: String { get }
@@ -83,8 +77,10 @@ public protocol SpecificCellProvider: CellProvider {
     func willShow(_ cell: CellType)
     func didHide(_ cell: CellType)
 }
+public extension SpecificCellProvider where CellType: IdentifiableTableViewCell {
+    var cellIdentifier: String { return CellType.reuseIdentifier }
+}
 public extension SpecificCellProvider {
-    var cellIdentifier: String { return CellType.description() }
     func setup(_ cell: UITableViewCell) {
         guard let cell = cell as? CellType else { return }
         self.setup(cell)
@@ -106,7 +102,7 @@ public extension SpecificCellProvider {
 
 
 // StandardCellProvder
-public class AnyCellProvider<CellType: UITableViewCell>: SpecificCellProvider {
+public class AnyCellProvider<CellType: IdentifiableTableViewCell>: SpecificCellProvider {
     
     let setup: (CellType)->Void
     let willShow: (CellType)->Void
