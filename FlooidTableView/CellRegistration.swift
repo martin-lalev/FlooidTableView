@@ -13,8 +13,7 @@ public protocol IdentifiableTableViewCell: UITableViewCell {
     static var reuseIdentifier: String { get }
 }
 
-public protocol RegisterableCellView {}
-public extension RegisterableCellView where Self: IdentifiableTableViewCell {
+public extension IdentifiableTableViewCell {
     static func register(in tableView:UITableView) {
         tableView.register(self, forCellReuseIdentifier: self.reuseIdentifier)
     }
