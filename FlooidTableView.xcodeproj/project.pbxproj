@@ -15,6 +15,9 @@
 		4605358D20D0C7DD003BE420 /* CellProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4605358C20D0C7DD003BE420 /* CellProvider.swift */; };
 		4605358F20D0C94B003BE420 /* FlooidTableView.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 4605358E20D0C94B003BE420 /* FlooidTableView.podspec */; };
 		4611CD9D22ABBCD600C4860F /* CellRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4611CD9C22ABBCD600C4860F /* CellRegistration.swift */; };
+		46DFE0DB22BE6F4300D4C3A0 /* Operator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DFE0DA22BE6F4300D4C3A0 /* Operator.swift */; };
+		46DFE0DE22BE70B100D4C3A0 /* SectionProviderGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DFE0DD22BE70B100D4C3A0 /* SectionProviderGenerator.swift */; };
+		46DFE0E022BE70D100D4C3A0 /* TableViewProviderGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DFE0DF22BE70D100D4C3A0 /* TableViewProviderGenerator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +30,9 @@
 		4605358C20D0C7DD003BE420 /* CellProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellProvider.swift; sourceTree = "<group>"; };
 		4605358E20D0C94B003BE420 /* FlooidTableView.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = FlooidTableView.podspec; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		4611CD9C22ABBCD600C4860F /* CellRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellRegistration.swift; sourceTree = "<group>"; };
+		46DFE0DA22BE6F4300D4C3A0 /* Operator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Operator.swift; sourceTree = "<group>"; };
+		46DFE0DD22BE70B100D4C3A0 /* SectionProviderGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionProviderGenerator.swift; sourceTree = "<group>"; };
+		46DFE0DF22BE70D100D4C3A0 /* TableViewProviderGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewProviderGenerator.swift; sourceTree = "<group>"; };
 		9BAF55F9E0CAB5D2A76182C2 /* Pods-FlooidTableView.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlooidTableView.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FlooidTableView/Pods-FlooidTableView.debug.xcconfig"; sourceTree = "<group>"; };
 		9C16A48F75A2CE057C367C1A /* Pods_FlooidTableView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FlooidTableView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4F6F1C42687662C157A4A26 /* Pods-FlooidTableView.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlooidTableView.release.xcconfig"; path = "Pods/Target Support Files/Pods-FlooidTableView/Pods-FlooidTableView.release.xcconfig"; sourceTree = "<group>"; };
@@ -65,6 +71,7 @@
 		4605357D20D0C74F003BE420 /* FlooidTableView */ = {
 			isa = PBXGroup;
 			children = (
+				46DFE0DC22BE70A700D4C3A0 /* DSL */,
 				4605358820D0C7A4003BE420 /* TableProvider.swift */,
 				4605358A20D0C7D0003BE420 /* SectionProvider.swift */,
 				4605358C20D0C7DD003BE420 /* CellProvider.swift */,
@@ -83,6 +90,16 @@
 				4605358620D0C789003BE420 /* TableViewAnimator.swift */,
 			);
 			path = "Diff Helper";
+			sourceTree = "<group>";
+		};
+		46DFE0DC22BE70A700D4C3A0 /* DSL */ = {
+			isa = PBXGroup;
+			children = (
+				46DFE0DA22BE6F4300D4C3A0 /* Operator.swift */,
+				46DFE0DD22BE70B100D4C3A0 /* SectionProviderGenerator.swift */,
+				46DFE0DF22BE70D100D4C3A0 /* TableViewProviderGenerator.swift */,
+			);
+			path = DSL;
 			sourceTree = "<group>";
 		};
 		954CD6C462A868578A850FAD /* Pods */ = {
@@ -204,11 +221,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46DFE0E022BE70D100D4C3A0 /* TableViewProviderGenerator.swift in Sources */,
 				4605358D20D0C7DD003BE420 /* CellProvider.swift in Sources */,
 				4611CD9D22ABBCD600C4860F /* CellRegistration.swift in Sources */,
 				4605358720D0C789003BE420 /* TableViewAnimator.swift in Sources */,
+				46DFE0DB22BE6F4300D4C3A0 /* Operator.swift in Sources */,
 				4605358920D0C7A4003BE420 /* TableProvider.swift in Sources */,
 				4605358B20D0C7D0003BE420 /* SectionProvider.swift in Sources */,
+				46DFE0DE22BE70B100D4C3A0 /* SectionProviderGenerator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
