@@ -13,6 +13,7 @@ import UIKit
 typealias AnimatorIdentifiers = (section:[String], data:[String:[String]])
 
 public protocol TableViewAnimatorDataProvider: class {
+    func reload()
     func sectionIdentifier(in tableView: UITableView, at index: Int) -> String
     func cellIdentifier(in tableView: UITableView, at indexPath: IndexPath) -> String
     func reloadCell(in tableView: UITableView, forRowAt indexPath: IndexPath) -> Void
@@ -54,10 +55,11 @@ public class TableViewAnimator {
     }
     
     private var mustReload = false
-    private func reloadData(_ completed: @escaping (AnimatorIdentifiers, AnimatorIdentifiers) -> Void) {
+    private func reloadData(_ reloadDataProvider: Bool = false, _ completed: @escaping (AnimatorIdentifiers, AnimatorIdentifiers) -> Void) {
         self.mustReload = true
         DispatchQueue.main.async {
             guard self.mustReload else { return }
+            if reloadDataProvider { self.dataProvider.reload() }
             self.mustReload = false
             
             let old = self.listIdentifiers
@@ -67,8 +69,8 @@ public class TableViewAnimator {
             completed(old, new)
         }
     }
-    public func reloadData(with animation: UITableView.RowAnimation = .fade, otherAnimations: @escaping () -> Void = { }, completed: @escaping () -> Void = { }) {
-        self.reloadData { (old, new) in
+    public func reloadData(includingDataProvider reloadDataProvider: Bool = false, with animation: UITableView.RowAnimation = .fade, otherAnimations: @escaping () -> Void = { }, completed: @escaping () -> Void = { }) {
+        self.reloadData(reloadDataProvider) { (old, new) in
             
             self.tableView.update(changes: {
                 let reloadSections = self.tableView.animateSectionsChanges(from: old.section, to: new.section, rowAnimation: animation)
