@@ -9,29 +9,30 @@
 import Foundation
 
 public class TableViewProviderGenerator {
-    var sectionProviders: [SectionProvider] = []
-    func append(_ provider: SectionProvider) {
-        sectionProviders.append(provider)
+    public var sectionProviders: [SectionProvider] = []
+    public init() {}
+    public func append(_ provider: SectionProvider) {
+        self.sectionProviders.append(provider)
+    }
+
+    public static func make(_ provider: (TableViewProviderGenerator) -> Void) -> TableViewProviderGenerator {
+        let generator = TableViewProviderGenerator()
+        provider(generator)
+        return generator
     }
 }
 extension TableViewProviderGenerator {
     
     @discardableResult
-    public static func |-- <V:SectionProvider> (lpred: TableViewProviderGenerator, rpred: V) -> TableViewProviderGenerator {
+    public static func |-- (lpred: TableViewProviderGenerator, rpred: SectionProvider) -> TableViewProviderGenerator {
         lpred.append(rpred)
         return lpred
     }
     
     @discardableResult
-    public static func |-- <V:SectionProvider> (lpred: TableViewProviderGenerator, rpred: V?) -> TableViewProviderGenerator {
+    public static func |-- (lpred: TableViewProviderGenerator, rpred: SectionProvider?) -> TableViewProviderGenerator {
         guard let rpred = rpred else { return lpred }
         lpred.append(rpred)
-        return lpred
-    }
-    
-    @discardableResult
-    public static func |-- <V:SectionProvider> (lpred: TableViewProviderGenerator, rpred: [V]) -> TableViewProviderGenerator {
-        for provider in rpred { lpred.append(provider) }
         return lpred
     }
     
@@ -43,23 +44,18 @@ extension TableViewProviderGenerator {
     
 }
 
-extension TableProvider {
-    public func provide(_ provider: (TableViewProviderGenerator) -> Void) {
-        let generator = TableViewProviderGenerator()
-        provider(generator)
-        generator.sectionProviders.add(to: self)
-    }
-    public static func make(_ identifier: String, _ maker: (TableViewProviderGenerator) -> Void) -> TableProvider {
-        let result = TableProvider(tableLoader: { _ in })
-        result.provide(maker)
-        return result
+public func If(_ expression: Bool, then: (TableViewProviderGenerator) -> Void = { _ in }, `else`: (TableViewProviderGenerator) -> Void = { _ in }) -> [SectionProvider] {
+    if expression {
+        return TableViewProviderGenerator.make(then).sectionProviders
+    } else {
+        return TableViewProviderGenerator.make(`else`).sectionProviders
     }
 }
 
-public func If(_ expression: Bool, then: (TableViewProviderGenerator) -> Void = { _ in }, `else`: (TableViewProviderGenerator) -> Void = { _ in }) -> [SectionProvider] {
+public func Unwrap<T>(_ value: T?, then: (TableViewProviderGenerator, T) -> Void = { _, _ in }, `else`: (TableViewProviderGenerator) -> Void = { _ in }) -> [SectionProvider] {
     let generator = TableViewProviderGenerator()
-    if expression {
-        then(generator)
+    if let value = value {
+        then(generator, value)
     } else {
         `else`(generator)
     }

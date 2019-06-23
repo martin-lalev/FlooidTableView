@@ -9,9 +9,16 @@
 import Foundation
 
 public class SectionProviderGenerator {
-    var cellProviders: [CellProvider] = []
-    func append(_ provider: CellProvider) {
+    public var cellProviders: [CellProvider] = []
+    public init() {}
+    public func append(_ provider: CellProvider) {
         cellProviders.append(provider)
+    }
+    
+    public static func make(_ provider: (SectionProviderGenerator) -> Void) -> SectionProviderGenerator {
+        let generator = SectionProviderGenerator()
+        provider(generator)
+        return generator
     }
 }
 extension SectionProviderGenerator {
@@ -43,23 +50,18 @@ extension SectionProviderGenerator {
     
 }
 
-extension SectionProvider {
-    public func provide(_ provider: (SectionProviderGenerator) -> Void) {
-        let generator = SectionProviderGenerator()
-        provider(generator)
-        generator.cellProviders.add(to: self)
-    }
-    public static func make(_ identifier: String, _ maker: (SectionProviderGenerator) -> Void) -> SectionProvider {
-        let result = SectionProvider(identifier, providersLoader: { _ in })
-        result.provide(maker)
-        return result
+public func If(_ expression: Bool, then: (SectionProviderGenerator) -> Void = { _ in }, `else`: (SectionProviderGenerator) -> Void = { _ in }) -> [CellProvider] {
+    if expression {
+        return SectionProviderGenerator.make(then).cellProviders
+    } else {
+        return SectionProviderGenerator.make(`else`).cellProviders
     }
 }
 
-public func If(_ expression: Bool, then: (SectionProviderGenerator) -> Void = { _ in }, `else`: (SectionProviderGenerator) -> Void = { _ in }) -> [CellProvider] {
+public func Unwrap<T>(_ value: T?, then: (SectionProviderGenerator, T) -> Void = { _, _ in }, `else`: (SectionProviderGenerator) -> Void = { _ in }) -> [CellProvider] {
     let generator = SectionProviderGenerator()
-    if expression {
-        then(generator)
+    if let value = value {
+        then(generator, value)
     } else {
         `else`(generator)
     }

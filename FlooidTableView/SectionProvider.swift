@@ -9,22 +9,14 @@
 import Foundation
 import UIKit
 
-public class SectionProvider {
+public struct SectionProvider {
     
-    public var sectionIdentifier: String
-    var cellProviders: [CellProvider] = []
+    public let sectionIdentifier: String
+    public let cellProviders: [CellProvider]
     
-    let providersLoader: (SectionProvider)->Void
-    
-    public init(_ identifier: String, providersLoader: @escaping (SectionProvider)->Void) {
+    public init(_ identifier: String, _ maker: (SectionProviderGenerator) -> Void) {
         self.sectionIdentifier = identifier
-        self.providersLoader = providersLoader
-        self.reload()
-    }
-    
-    public func reload() {
-        self.cellProviders.removeAll()
-        self.providersLoader(self)
+        self.cellProviders = SectionProviderGenerator.make(maker).cellProviders
     }
     
     
@@ -64,23 +56,5 @@ public class SectionProvider {
     public func didHide(_ cell: UITableViewCell, in tableView: UITableView, at indexPath: IndexPath) -> Void {
         guard indexPath.row < self.cellProviders.count else { return }
         self.cellProviders[indexPath.row].didHide(cell, in: tableView, at: indexPath)
-    }
-}
-
-extension CellProvider {
-    public func add(to sectionProviders: SectionProvider) {
-        sectionProviders.cellProviders.append(self)
-    }
-}
-
-extension Sequence where Element == CellProvider {
-    public func add(to sectionProvider: SectionProvider) {
-        for p in self { p.add(to: sectionProvider) }
-    }
-}
-
-extension Sequence where Element: CellProvider {
-    public func add(to sectionProvider: SectionProvider) {
-        for p in self { p.add(to: sectionProvider) }
     }
 }
