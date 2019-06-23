@@ -1,5 +1,5 @@
 //
-//  TableViewDataSource.swift
+//  TableProvider.swift
 //  FlooidTableView
 //
 //  Created by Martin Lalev on 22.06.19.
@@ -14,24 +14,24 @@ public protocol TableProviderScrollDelegate: class {
     func scrollViewDidScroll(_ scrollView: UIScrollView)
 }
 
-public class TableViewDataSource: NSObject {
+public class TableProvider: NSObject {
     
     public weak var scrollDelegate: TableProviderScrollDelegate?
     var sections: [SectionProvider] = []
     
-    let tableLoader: (TableViewProviderGenerator) -> Void
+    var tableLoader: (TableViewProviderGenerator) -> Void
     
-    weak var tableView:UITableView!
+    weak var tableView: UITableView!
     
-    public init(for tableView: UITableView, scrollDelegate: TableProviderScrollDelegate?, tableLoader: @escaping (TableViewProviderGenerator) -> Void) {
-        self.tableView = tableView
-        self.scrollDelegate = scrollDelegate
+    public init(tableLoader: @escaping (TableViewProviderGenerator) -> Void) {
         self.tableLoader = tableLoader
         super.init()
+    }
+    public func provide(for tableView: UITableView, scrollDelegate: TableProviderScrollDelegate? = nil) {
+        self.tableView = tableView
         self.tableView.dataSource = self
         self.tableView.delegate = self
-    }
-    func updateTable() {
+        self.scrollDelegate = scrollDelegate
         self.sections = TableViewProviderGenerator.make(self.tableLoader).sectionProviders
     }
     
@@ -40,52 +40,28 @@ public class TableViewDataSource: NSObject {
     // MARK: - Reloading
     
     private var mustReload = false
-    private func reloadData(_ completed: @escaping ([(String, [String])], [(String, [String])]) -> Void) {
+    public func reloadData(animation: UITableView.RowAnimation = .fade, otherAnimations: @escaping () -> Void = { }, completed: @escaping () -> Void = { }) {
         self.mustReload = true
         DispatchQueue.main.async {
             guard self.mustReload else { return }
             self.mustReload = false
             
             let old = self.sections.map { ($0.sectionIdentifier, $0.cellProviders.map { $0.identifier }) }
-            self.updateTable()
+            self.sections = TableViewProviderGenerator.make(self.tableLoader).sectionProviders
             let new = self.sections.map { ($0.sectionIdentifier, $0.cellProviders.map { $0.identifier }) }
             
-            completed(old, new)
-        }
-    }
-    
-    public func reloadData(animation: UITableView.RowAnimation = .fade, otherAnimations: @escaping () -> Void = { }, completed: @escaping () -> Void = { }) {
-        guard animation != .none else {
-            self.updateTable()
-            self.tableView.reloadData()
-            completed()
-            return
-        }
-        self.reloadData { (old, new) in
-            
-            self.tableView.update(changes: {
-                let reloadSections = self.tableView.animateSectionsChanges(from: old.map { $0.0 }, to: new.map { $0.0 }, rowAnimation: animation)
-                for sectionIdentifier in reloadSections {
-                    let index = new.firstIndex(where: { $0.0 == sectionIdentifier })!
-                    let from = old.first(where: { $0.0 == sectionIdentifier })!.1
-                    let to = new.first(where: { $0.0 == sectionIdentifier })!.1
-                    self.tableView.animateCellsChanges(in: index, from: from, to: to, rowAnimation: animation)
-                }
-                
-            }, animations: {
+            self.tableView.update(with: animation, old: old, new: new, animations: {
                 for indexPath in self.tableView.indexPathsForVisibleRows ?? [] {
                     self.sections[indexPath.section].reloadCell(in: self.tableView, at: indexPath)
                 }
                 otherAnimations()
                 
-            }) {
-                completed()
-            }
+            }, completed)
         }
     }
 }
 
-extension TableViewDataSource: UITableViewDataSource, UITableViewDelegate {
+extension TableProvider: UITableViewDataSource, UITableViewDelegate {
     
     public func numberOfSections(in tableView: UITableView) -> Int {
         return self.sections.count

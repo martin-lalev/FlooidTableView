@@ -27,9 +27,18 @@ extension UITableView {
         self.endUpdates()
         
     }
-}
-
-extension UITableView {
+    
+    func update(with animation: UITableView.RowAnimation, old: [(String, [String])], new: [(String, [String])], animations: @escaping () -> Void, _ completed: @escaping () -> Void = { }) {
+        self.update(changes: {
+            let reloadSections = self.animateSectionsChanges(from: old.map { $0.0 }, to: new.map { $0.0 }, rowAnimation: animation)
+            for sectionIdentifier in reloadSections {
+                let index = new.firstIndex(where: { $0.0 == sectionIdentifier })!
+                let from = old.first(where: { $0.0 == sectionIdentifier })!.1
+                let to = new.first(where: { $0.0 == sectionIdentifier })!.1
+                self.animateCellsChanges(in: index, from: from, to: to, rowAnimation: animation)
+            }
+        }, animations: animations, completed)
+    }
     
     @discardableResult
     func animateSectionsChanges(from sections_old:[String], to sections_new:[String], rowAnimation:UITableView.RowAnimation) -> [String] {
