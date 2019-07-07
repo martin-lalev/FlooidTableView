@@ -7,15 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00FCA37A2D9B716B771A0B08 /* Pods_FlooidTableView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C16A48F75A2CE057C367C1A /* Pods_FlooidTableView.framework */; };
 		4605358020D0C74F003BE420 /* FlooidTableView.h in Headers */ = {isa = PBXBuildFile; fileRef = 4605357E20D0C74F003BE420 /* FlooidTableView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4605358B20D0C7D0003BE420 /* SectionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4605358A20D0C7D0003BE420 /* SectionProvider.swift */; };
 		4605358D20D0C7DD003BE420 /* CellProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4605358C20D0C7DD003BE420 /* CellProvider.swift */; };
 		4605358F20D0C94B003BE420 /* FlooidTableView.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 4605358E20D0C94B003BE420 /* FlooidTableView.podspec */; };
-		4611CD9D22ABBCD600C4860F /* CellRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4611CD9C22ABBCD600C4860F /* CellRegistration.swift */; };
-		46DFE0DB22BE6F4300D4C3A0 /* Operator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DFE0DA22BE6F4300D4C3A0 /* Operator.swift */; };
-		46DFE0DE22BE70B100D4C3A0 /* SectionProviderGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DFE0DD22BE70B100D4C3A0 /* SectionProviderGenerator.swift */; };
-		46DFE0E022BE70D100D4C3A0 /* TableViewProviderGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DFE0DF22BE70D100D4C3A0 /* TableViewProviderGenerator.swift */; };
+		462BC3CA22D1E95B00A8D699 /* AnyCellProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462BC3C922D1E95B00A8D699 /* AnyCellProvider.swift */; };
+		46DFE0E022BE70D100D4C3A0 /* ItemsGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DFE0DF22BE70D100D4C3A0 /* ItemsGenerator.swift */; };
 		46DFE0E222BE73CC00D4C3A0 /* TableProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DFE0E122BE73CC00D4C3A0 /* TableProvider.swift */; };
 		46DFE0E622BEC3FD00D4C3A0 /* UITableView+DiffingAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DFE0E522BEC3FC00D4C3A0 /* UITableView+DiffingAnimation.swift */; };
 /* End PBXBuildFile section */
@@ -24,18 +20,13 @@
 		4605357B20D0C74F003BE420 /* FlooidTableView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FlooidTableView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4605357E20D0C74F003BE420 /* FlooidTableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FlooidTableView.h; sourceTree = "<group>"; };
 		4605357F20D0C74F003BE420 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4605358A20D0C7D0003BE420 /* SectionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionProvider.swift; sourceTree = "<group>"; };
 		4605358C20D0C7DD003BE420 /* CellProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellProvider.swift; sourceTree = "<group>"; };
 		4605358E20D0C94B003BE420 /* FlooidTableView.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = FlooidTableView.podspec; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		4611CD9C22ABBCD600C4860F /* CellRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellRegistration.swift; sourceTree = "<group>"; };
-		46DFE0DA22BE6F4300D4C3A0 /* Operator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Operator.swift; sourceTree = "<group>"; };
-		46DFE0DD22BE70B100D4C3A0 /* SectionProviderGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionProviderGenerator.swift; sourceTree = "<group>"; };
-		46DFE0DF22BE70D100D4C3A0 /* TableViewProviderGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewProviderGenerator.swift; sourceTree = "<group>"; };
+		462BC3C922D1E95B00A8D699 /* AnyCellProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyCellProvider.swift; sourceTree = "<group>"; };
+		46C4936422D14346003CE14A /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = SOURCE_ROOT; };
+		46DFE0DF22BE70D100D4C3A0 /* ItemsGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsGenerator.swift; sourceTree = "<group>"; };
 		46DFE0E122BE73CC00D4C3A0 /* TableProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableProvider.swift; sourceTree = "<group>"; };
 		46DFE0E522BEC3FC00D4C3A0 /* UITableView+DiffingAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+DiffingAnimation.swift"; sourceTree = "<group>"; };
-		9BAF55F9E0CAB5D2A76182C2 /* Pods-FlooidTableView.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlooidTableView.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FlooidTableView/Pods-FlooidTableView.debug.xcconfig"; sourceTree = "<group>"; };
-		9C16A48F75A2CE057C367C1A /* Pods_FlooidTableView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FlooidTableView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D4F6F1C42687662C157A4A26 /* Pods-FlooidTableView.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlooidTableView.release.xcconfig"; path = "Pods/Target Support Files/Pods-FlooidTableView/Pods-FlooidTableView.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,7 +34,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00FCA37A2D9B716B771A0B08 /* Pods_FlooidTableView.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -55,8 +45,6 @@
 			children = (
 				4605357D20D0C74F003BE420 /* FlooidTableView */,
 				4605357C20D0C74F003BE420 /* Products */,
-				954CD6C462A868578A850FAD /* Pods */,
-				A8DF25D6410579CB4FFE5AC4 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -71,44 +59,25 @@
 		4605357D20D0C74F003BE420 /* FlooidTableView */ = {
 			isa = PBXGroup;
 			children = (
-				46DFE0E122BE73CC00D4C3A0 /* TableProvider.swift */,
-				4605358A20D0C7D0003BE420 /* SectionProvider.swift */,
-				4605358C20D0C7DD003BE420 /* CellProvider.swift */,
-				4611CD9C22ABBCD600C4860F /* CellRegistration.swift */,
-				46DFE0E522BEC3FC00D4C3A0 /* UITableView+DiffingAnimation.swift */,
-				46DFE0DC22BE70A700D4C3A0 /* DSL */,
+				46FF961922D1407B00A9F72F /* Source */,
 				4605357E20D0C74F003BE420 /* FlooidTableView.h */,
-				4605357F20D0C74F003BE420 /* Info.plist */,
 				4605358E20D0C94B003BE420 /* FlooidTableView.podspec */,
+				46C4936422D14346003CE14A /* Package.swift */,
+				4605357F20D0C74F003BE420 /* Info.plist */,
 			);
 			path = FlooidTableView;
 			sourceTree = "<group>";
 		};
-		46DFE0DC22BE70A700D4C3A0 /* DSL */ = {
+		46FF961922D1407B00A9F72F /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				46DFE0DA22BE6F4300D4C3A0 /* Operator.swift */,
-				46DFE0DD22BE70B100D4C3A0 /* SectionProviderGenerator.swift */,
-				46DFE0DF22BE70D100D4C3A0 /* TableViewProviderGenerator.swift */,
+				46DFE0E122BE73CC00D4C3A0 /* TableProvider.swift */,
+				4605358C20D0C7DD003BE420 /* CellProvider.swift */,
+				462BC3C922D1E95B00A8D699 /* AnyCellProvider.swift */,
+				46DFE0DF22BE70D100D4C3A0 /* ItemsGenerator.swift */,
+				46DFE0E522BEC3FC00D4C3A0 /* UITableView+DiffingAnimation.swift */,
 			);
-			path = DSL;
-			sourceTree = "<group>";
-		};
-		954CD6C462A868578A850FAD /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				9BAF55F9E0CAB5D2A76182C2 /* Pods-FlooidTableView.debug.xcconfig */,
-				D4F6F1C42687662C157A4A26 /* Pods-FlooidTableView.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
-		A8DF25D6410579CB4FFE5AC4 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				9C16A48F75A2CE057C367C1A /* Pods_FlooidTableView.framework */,
-			);
-			name = Frameworks;
+			path = Source;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -129,7 +98,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4605358320D0C74F003BE420 /* Build configuration list for PBXNativeTarget "FlooidTableView" */;
 			buildPhases = (
-				8C1B5F3E3CC1AA14A7924FB5 /* [CP] Check Pods Manifest.lock */,
 				4605357620D0C74F003BE420 /* Sources */,
 				4605357720D0C74F003BE420 /* Frameworks */,
 				4605357820D0C74F003BE420 /* Headers */,
@@ -187,40 +155,16 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		8C1B5F3E3CC1AA14A7924FB5 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-FlooidTableView-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		4605357620D0C74F003BE420 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				46DFE0E222BE73CC00D4C3A0 /* TableProvider.swift in Sources */,
-				46DFE0E022BE70D100D4C3A0 /* TableViewProviderGenerator.swift in Sources */,
+				46DFE0E022BE70D100D4C3A0 /* ItemsGenerator.swift in Sources */,
 				4605358D20D0C7DD003BE420 /* CellProvider.swift in Sources */,
-				4611CD9D22ABBCD600C4860F /* CellRegistration.swift in Sources */,
 				46DFE0E622BEC3FD00D4C3A0 /* UITableView+DiffingAnimation.swift in Sources */,
-				46DFE0DB22BE6F4300D4C3A0 /* Operator.swift in Sources */,
-				4605358B20D0C7D0003BE420 /* SectionProvider.swift in Sources */,
-				46DFE0DE22BE70B100D4C3A0 /* SectionProviderGenerator.swift in Sources */,
+				462BC3CA22D1E95B00A8D699 /* AnyCellProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -349,7 +293,6 @@
 		};
 		4605358420D0C74F003BE420 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9BAF55F9E0CAB5D2A76182C2 /* Pods-FlooidTableView.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -378,7 +321,6 @@
 		};
 		4605358520D0C74F003BE420 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D4F6F1C42687662C157A4A26 /* Pods-FlooidTableView.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
