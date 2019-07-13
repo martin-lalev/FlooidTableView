@@ -24,16 +24,16 @@ public class TableProvider: NSObject {
     private var sections: [Section] = []
     private var sectionsLoader: () -> [Section]
     
-    private weak var tableView: UITableView!
+    private weak var tableView: UITableView?
     
     public init(with sectionsLoader: @autoclosure @escaping () -> [Section]) {
         self.sectionsLoader = sectionsLoader
         super.init()
     }
     public func provide(for tableView: UITableView, scrollDelegate: TableProviderScrollDelegate? = nil) {
+        tableView.dataSource = self
+        tableView.delegate = self
         self.tableView = tableView
-        self.tableView.dataSource = self
-        self.tableView.delegate = self
         self.scrollDelegate = scrollDelegate
         self.sections = self.sectionsLoader()
     }
@@ -59,9 +59,14 @@ public class TableProvider: NSObject {
         self.sections = self.sectionsLoader()
         let new = self.sections.map { ($0.identifier, $0.cellProviders.map { $0.identifier }) }
         
-        self.tableView.update(with: animation, old: old, new: new, animations: {
-            for indexPath in self.tableView.indexPathsForVisibleRows ?? [] {
-                if let cell = self.tableView.cellForRow(at: indexPath) {
+        guard let tableView = self.tableView else {
+            completed()
+            return
+        }
+        
+        tableView.update(with: animation, old: old, new: new, animations: {
+            for indexPath in tableView.indexPathsForVisibleRows ?? [] {
+                if let cell = tableView.cellForRow(at: indexPath) {
                     self[indexPath].setup(cell)
                 }
             }
