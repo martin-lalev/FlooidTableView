@@ -54,25 +54,16 @@ public class TableProvider: NSObject {
     
     // MARK: - Reloading
     
-    public func reloadData(animation: UITableView.RowAnimation = .fade, otherAnimations: @escaping () -> Void = { }, completed: @escaping () -> Void = { }) {
+    public func reloadData(animation: UITableView.RowAnimation = .fade, _ completed: @escaping () -> Void = { }) {
         let old = self.sections.map { ($0.identifier, $0.cellProviders.map { $0.identifier }) }
         self.sections = self.sectionsLoader()
         let new = self.sections.map { ($0.identifier, $0.cellProviders.map { $0.identifier }) }
         
-        guard let tableView = self.tableView else {
+        if let tableView = self.tableView {
+            tableView.update(with: animation, old: old, new: new, completed)
+        } else {
             completed()
-            return
         }
-        
-        tableView.update(with: animation, old: old, new: new, animations: {
-            for indexPath in tableView.indexPathsForVisibleRows ?? [] {
-                if let cell = tableView.cellForRow(at: indexPath) {
-                    self[indexPath].setup(cell)
-                }
-            }
-            otherAnimations()
-            
-        }, completed)
     }
 }
 

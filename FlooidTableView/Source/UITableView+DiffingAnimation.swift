@@ -11,26 +11,8 @@ import UIKit
 
 extension UITableView {
     
-    private func update(changes: () -> Void, animations: @escaping () -> Void, _ completed: @escaping () -> Void = { }) {
-        CATransaction.begin()
-        CATransaction.setCompletionBlock(completed)
-        
-        self.beginUpdates()
-        changes()
-        self.endUpdates()
-        
-        let duration = CATransaction.animationDuration();
-        CATransaction.commit();
-        
-        UIView.animate(withDuration: duration, delay: 0, options: [.allowUserInteraction], animations: animations)
-        self.beginUpdates()
-        self.endUpdates()
-        
-    }
-    
-    func update(with animation: UITableView.RowAnimation, old: [(String, [String])], new: [(String, [String])], animations: @escaping () -> Void, _ completed: @escaping () -> Void = { }) {
-        self.update(changes: {
-            
+    func update(with animation: UITableView.RowAnimation, old: [(String, [String])], new: [(String, [String])], _ completed: @escaping () -> Void = { }) {
+        self.performBatchUpdates({
             let sectionsFrom = old.map { $0.0 }
             let sectionsTo = new.map { $0.0 }
 
@@ -43,7 +25,7 @@ extension UITableView {
                 
                 self.applyToCells(Changes.make(from: cellsFrom, to: cellsTo), at: sectionIndex, with: animation)
             }
-        }, animations: animations, completed)
+        }, completion: { _ in completed() })
     }
     
     private func applyToSections(_ changes: Changes, with animation: UITableView.RowAnimation) {

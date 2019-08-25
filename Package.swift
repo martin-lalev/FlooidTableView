@@ -4,7 +4,7 @@ import PackageDescription
 
 let package = Package(
     name: "FlooidTableView",
-    platforms: [.iOS(.v10)],
+    platforms: [.iOS(.v11)],
     products: [
         .library(
             name: "FlooidTableView",
