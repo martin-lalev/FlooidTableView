@@ -11,6 +11,20 @@ import UIKit
 
 extension UITableView {
     
+    private func performBatchUpdates(_ changes: () -> Void, completion completed: ((Bool) -> Void)? = nil) {
+        CATransaction.begin()
+        CATransaction.setCompletionBlock(completed.map { callback in { callback(true) } } ?? { })
+
+        self.beginUpdates()
+        changes()
+        self.endUpdates()
+        
+        CATransaction.commit();
+        
+        self.beginUpdates()
+        self.endUpdates()
+    }
+    
     func update(with animation: UITableView.RowAnimation, old: [(String, [String])], new: [(String, [String])], _ completed: @escaping () -> Void = { }) {
         self.performBatchUpdates({
             let sectionsFrom = old.map { $0.0 }
