@@ -11,6 +11,7 @@
 		4605358D20D0C7DD003BE420 /* CellProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4605358C20D0C7DD003BE420 /* CellProvider.swift */; };
 		4605358F20D0C94B003BE420 /* FlooidTableView.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 4605358E20D0C94B003BE420 /* FlooidTableView.podspec */; };
 		462BC3CA22D1E95B00A8D699 /* AnyCellProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462BC3C922D1E95B00A8D699 /* AnyCellProvider.swift */; };
+		4669F1C4246FF0F00041CF9C /* ProvidedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4669F1C3246FF0F00041CF9C /* ProvidedTableView.swift */; };
 		46DFE0E022BE70D100D4C3A0 /* ItemsGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DFE0DF22BE70D100D4C3A0 /* ItemsGenerator.swift */; };
 		46DFE0E222BE73CC00D4C3A0 /* TableProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DFE0E122BE73CC00D4C3A0 /* TableProvider.swift */; };
 		46DFE0E622BEC3FD00D4C3A0 /* UITableView+DiffingAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DFE0E522BEC3FC00D4C3A0 /* UITableView+DiffingAnimation.swift */; };
@@ -23,6 +24,7 @@
 		4605358C20D0C7DD003BE420 /* CellProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellProvider.swift; sourceTree = "<group>"; };
 		4605358E20D0C94B003BE420 /* FlooidTableView.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = FlooidTableView.podspec; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		462BC3C922D1E95B00A8D699 /* AnyCellProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyCellProvider.swift; sourceTree = "<group>"; };
+		4669F1C3246FF0F00041CF9C /* ProvidedTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProvidedTableView.swift; sourceTree = "<group>"; };
 		46C4936422D14346003CE14A /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = SOURCE_ROOT; };
 		46DFE0DF22BE70D100D4C3A0 /* ItemsGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsGenerator.swift; sourceTree = "<group>"; };
 		46DFE0E122BE73CC00D4C3A0 /* TableProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableProvider.swift; sourceTree = "<group>"; };
@@ -71,6 +73,7 @@
 		46FF961922D1407B00A9F72F /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				4669F1C3246FF0F00041CF9C /* ProvidedTableView.swift */,
 				46DFE0E122BE73CC00D4C3A0 /* TableProvider.swift */,
 				4605358C20D0C7DD003BE420 /* CellProvider.swift */,
 				462BC3C922D1E95B00A8D699 /* AnyCellProvider.swift */,
@@ -162,6 +165,7 @@
 			files = (
 				46DFE0E222BE73CC00D4C3A0 /* TableProvider.swift in Sources */,
 				46DFE0E022BE70D100D4C3A0 /* ItemsGenerator.swift in Sources */,
+				4669F1C4246FF0F00041CF9C /* ProvidedTableView.swift in Sources */,
 				4605358D20D0C7DD003BE420 /* CellProvider.swift in Sources */,
 				46DFE0E622BEC3FD00D4C3A0 /* UITableView+DiffingAnimation.swift in Sources */,
 				462BC3CA22D1E95B00A8D699 /* AnyCellProvider.swift in Sources */,
