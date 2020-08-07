@@ -26,6 +26,9 @@ public protocol CellProvider {
     func willShow(_ cell: UITableViewCell)
     func didHide(_ cell: UITableViewCell)
     
+    func prefetch()
+    func cancelPrefetch()
+    
 }
 
 extension CellProvider {
@@ -38,6 +41,12 @@ extension CellProvider {
     
     public func estimatedHeight(tableView: UITableView) -> CGFloat {
         return self.height(tableView: tableView)
+    }
+    
+    public func prefetch() {
+    }
+    
+    public func cancelPrefetch() {
     }
 
 }

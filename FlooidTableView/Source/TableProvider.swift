@@ -33,6 +33,7 @@ public class TableProvider: NSObject {
     public func provide(for tableView: UITableView, scrollDelegate: TableProviderScrollDelegate? = nil) {
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.prefetchDataSource = self
         self.tableView = tableView
         self.scrollDelegate = scrollDelegate
         self.sections = self.sectionsLoader()
@@ -76,7 +77,7 @@ public class TableProvider: NSObject {
     }
 }
 
-extension TableProvider: UITableViewDataSource, UITableViewDelegate {
+extension TableProvider: UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching {
     
     public func numberOfSections(in tableView: UITableView) -> Int {
         return self.sections.count
@@ -88,6 +89,7 @@ extension TableProvider: UITableViewDataSource, UITableViewDelegate {
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: self[indexPath].reuseIdentifier, for: indexPath as IndexPath)
+        print("TABLEPREFETCH - cellforrow")
         self[indexPath].setup(cell)
         return cell
     }
@@ -110,6 +112,21 @@ extension TableProvider: UITableViewDataSource, UITableViewDelegate {
         self[indexPath].didHide(cell)
     }
 
+    public func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        print("TABLEPREFETCH - prefetch")
+        for indexPath in indexPaths {
+            guard indexPath.row < self[indexPath.section].cellProviders.count else { continue }
+            self[indexPath].prefetch()
+        }
+    }
+
+    
+    public func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
+        for indexPath in indexPaths {
+            guard indexPath.row < self[indexPath.section].cellProviders.count else { continue }
+            self[indexPath].cancelPrefetch()
+        }
+    }
 
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.scrollDelegate?.scrollViewDidScroll(scrollView)
