@@ -38,8 +38,8 @@ public class ItemsGenerator<Item> {
 // MARK: - Helpers
 
 public extension TableProvider {
-    convenience init(with maker: @escaping (ItemsGenerator<TableProvider.Section>) -> Void) {
-        self.init(with: List(maker))
+    func reloadData(with maker: @escaping (ItemsGenerator<TableProvider.Section>) -> Void, animation: UITableView.RowAnimation = .fade, otherAnimations: @escaping () -> Void = { }, completed: @escaping () -> Void = { }) {
+        self.reloadData(sections: List(maker), animation: animation, otherAnimations: otherAnimations, completed: completed)
     }
 }
 

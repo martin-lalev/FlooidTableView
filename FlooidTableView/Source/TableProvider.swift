@@ -22,21 +22,15 @@ public class TableProvider: NSObject {
 
     private weak var scrollDelegate: TableProviderScrollDelegate?
     private var sections: [Section] = []
-    private var sectionsLoader: () -> [Section]
     
     private weak var tableView: UITableView?
     
-    public init(with sectionsLoader: @autoclosure @escaping () -> [Section]) {
-        self.sectionsLoader = sectionsLoader
-        super.init()
-    }
     public func provide(for tableView: UITableView, scrollDelegate: TableProviderScrollDelegate? = nil) {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.prefetchDataSource = self
         self.tableView = tableView
         self.scrollDelegate = scrollDelegate
-        self.sections = self.sectionsLoader()
     }
     
     
@@ -55,9 +49,9 @@ public class TableProvider: NSObject {
     
     // MARK: - Reloading
     
-    public func reloadData(animation: UITableView.RowAnimation = .fade, otherAnimations: @escaping () -> Void = { }, completed: @escaping () -> Void = { }) {
+    public func reloadData(sections: [Section], animation: UITableView.RowAnimation = .fade, otherAnimations: @escaping () -> Void = { }, completed: @escaping () -> Void = { }) {
         let old = self.sections.map { ($0.identifier, $0.cellProviders.map { $0.identifier }) }
-        self.sections = self.sectionsLoader()
+        self.sections = sections
         let new = self.sections.map { ($0.identifier, $0.cellProviders.map { $0.identifier }) }
         
         guard let tableView = self.tableView else {

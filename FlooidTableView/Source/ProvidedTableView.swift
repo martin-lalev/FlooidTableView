@@ -10,12 +10,22 @@ import Foundation
 
 open class ProvidedTableView: UITableView {
     
-    private(set) public var tableProvider = TableProvider(with: { _ in })
+    public let tableProvider = TableProvider()
     
     private weak var scrollDelegate: TableProviderScrollDelegate?
     
     public func assignScrollDelegate(to scrollDelegate: TableProviderScrollDelegate) {
         self.scrollDelegate = scrollDelegate
+    }
+    
+    public override init(frame: CGRect, style: UITableView.Style) {
+        super.init(frame: frame, style: style)
+        self.provide()
+    }
+    
+    public required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        self.provide()
     }
     
     open func register(_ cellTypes: [FlooidTableView.IdentifiableCell.Type] = []) {
@@ -26,8 +36,7 @@ open class ProvidedTableView: UITableView {
     open func register(_ cellTypes: FlooidTableView.IdentifiableCell.Type ...) {
         self.register(cellTypes)
     }
-    open func provide(_ maker: @escaping (ItemsGenerator<TableProvider.Section>) -> Void) {
-        self.tableProvider = TableProvider(with: maker)
+    private func provide() {
         self.tableProvider.provide(for: self, scrollDelegate: self)
     }
 
