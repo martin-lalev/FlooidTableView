@@ -1,5 +1,5 @@
 //
-//  IdentifiableCell.swift
+//  TableIdentifiableCell.swift
 //  FlooidTableView
 //
 //  Created by Martin Lalev on 11/07/2021.
@@ -8,12 +8,12 @@
 
 import UIKit
 
-public protocol IdentifiableCell: UITableViewCell {
+public protocol TableIdentifiableCell: UITableViewCell {
     static var reuseIdentifier: String { get }
     static func register(in view: UITableView)
 }
 
-public extension IdentifiableCell {
+public extension TableIdentifiableCell {
     static func makeCell(
         identifier: String,
         reuseIdentifier: String = Self.reuseIdentifier,
@@ -53,12 +53,12 @@ public extension IdentifiableCell {
 
 extension UITableView {
 
-    open func register(_ cellTypes: [IdentifiableCell.Type] = []) {
+    open func register(_ cellTypes: [TableIdentifiableCell.Type] = []) {
         for cellType in cellTypes {
             cellType.register(in: self)
         }
     }
-    open func register(_ cellTypes: IdentifiableCell.Type ...) {
+    open func register(_ cellTypes: TableIdentifiableCell.Type ...) {
         self.register(cellTypes)
     }
 
