@@ -14,39 +14,61 @@ public protocol IdentifiableCell: UITableViewCell {
     static func register(in view: UITableView)
 }
 
-public protocol CellProvider {
+public class CellProvider {
     
-    var identifier: String { get }
-    var reuseIdentifier: String { get }
+    public let identifier: String
+    public let reuseIdentifier: String
 
-    func height(tableView: UITableView) -> CGFloat
-    func estimatedHeight(tableView: UITableView) -> CGFloat
+    private let height: (UITableView) -> CGFloat
+    private let heightEstimation: ((UITableView) -> CGFloat)?
 
-    func setup(_ cell: UITableViewCell)
-    func willShow(_ cell: UITableViewCell)
-    func didHide(_ cell: UITableViewCell)
+    private let setup: (UITableViewCell)->Void
+    private let willShow: (UITableViewCell)->Void
+    private let didHide: (UITableViewCell)->Void
+    private let prefetcher: () -> Void
+    private let cancelPrefetcher: () -> Void
     
-    func prefetch()
-    func cancelPrefetch()
-    
-}
-
-extension CellProvider {
-    
-    public func willShow(_ cell: UITableViewCell) {
+    public init(identifier: String, reuseIdentifier: String, height: @escaping (UITableView) -> CGFloat, heightEstimation: ((UITableView) -> CGFloat)? = nil, willShow: @escaping (UITableViewCell)->Void = { _ in }, didHide: @escaping (UITableViewCell)->Void = { _ in }, prefetch: @escaping () -> Void = { }, cancelPrefetch: @escaping () -> Void = { }, setup: @escaping (UITableViewCell)->Void) {
+        self.identifier = identifier
+        self.reuseIdentifier = reuseIdentifier
+        self.height = height
+        self.heightEstimation = heightEstimation
+        self.setup = setup
+        self.willShow = willShow
+        self.didHide = didHide
+        self.prefetcher = prefetch
+        self.cancelPrefetcher = cancelPrefetch
     }
-    
-    public func didHide(_ cell: UITableViewCell) {
+    public convenience init(identifier: String, reuseIdentifier: String, height: CGFloat, heightEstimation: ((UITableView) -> CGFloat)? = nil, willShow: @escaping (UITableViewCell)->Void = { _ in }, didHide: @escaping (UITableViewCell)->Void = { _ in }, prefetch: @escaping () -> Void = { }, cancelPrefetch: @escaping () -> Void = { }, setup: @escaping (UITableViewCell)->Void) {
+        self.init(identifier: identifier, reuseIdentifier: reuseIdentifier, height: { _ in height }, heightEstimation: heightEstimation, willShow: willShow, didHide: didHide, prefetch: prefetch, cancelPrefetch: cancelPrefetch, setup: setup)
+    }
+
+    public func height(tableView: UITableView) -> CGFloat {
+        return self.height(tableView)
     }
     
     public func estimatedHeight(tableView: UITableView) -> CGFloat {
-        return self.height(tableView: tableView)
+        return self.heightEstimation?(tableView) ?? self.height(tableView)
+    }
+    
+    public func setup(_ cell: UITableViewCell) {
+        self.setup(cell)
+    }
+    
+    public func willShow(_ cell: UITableViewCell) {
+        self.willShow(cell)
+    }
+    
+    public func didHide(_ cell: UITableViewCell) {
+        self.didHide(cell)
     }
     
     public func prefetch() {
-    }
-    
-    public func cancelPrefetch() {
+        self.prefetcher()
     }
 
+    public func cancelPrefetch() {
+        self.cancelPrefetcher()
+    }
+    
 }

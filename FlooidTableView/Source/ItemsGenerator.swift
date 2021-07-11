@@ -9,64 +9,62 @@
 import Foundation
 import UIKit
 
-public class ItemsGenerator<Item> {
-    
-    var items: [Item] = []
-    init() { }
+// MARK: - Cells Array Builder
 
-    @discardableResult
-    public func append(_ provider: Item) -> ItemsGenerator {
-        self.items.append(provider)
-        return self
-    }
-    
-    @discardableResult
-    public func append(_ provider: Item?) -> ItemsGenerator {
-        guard let provider = provider else { return self }
-        self.items.append(provider)
-        return self
-    }
-    
-    @discardableResult
-    public func append(_ providers: [Item]) -> ItemsGenerator {
-        self.items.append(contentsOf: providers)
-        return self
-    }
+public protocol TableViewCellArrayConvertible {
+    func items() -> [CellProvider]
+}
+extension CellProvider: TableViewCellArrayConvertible {
+    public func items() -> [CellProvider] { [self] }
+}
+extension Array: TableViewCellArrayConvertible where Element: CellProvider {
+    public func items() -> [CellProvider] { self }
 }
 
+@resultBuilder
+public struct TableViewCellsArrayBuilder {
 
-// MARK: - Helpers
+    public static func buildBlock(_ components: TableViewCellArrayConvertible ...) -> TableViewCellArrayConvertible { components.flatMap { $0.items() } }
+
+    public static func buildIf(_ component: TableViewCellArrayConvertible?) -> TableViewCellArrayConvertible { component ?? [CellProvider]() }
+
+    public static func buildEither(first: TableViewCellArrayConvertible) -> TableViewCellArrayConvertible { first }
+
+    public static func buildEither(second: TableViewCellArrayConvertible) -> TableViewCellArrayConvertible { second }
+
+}
+
+public func Section(_ identifier: String, @TableViewCellsArrayBuilder _ viewBuilder: () -> TableViewCellArrayConvertible) -> TableProvider.Section {
+    return TableProvider.Section(identifier: identifier, cellProviders: viewBuilder().items())
+}
+
+// MARK: - Sections Array Builder
+
+public protocol TableViewSectionArrayConvertible {
+    func items() -> [TableProvider.Section]
+}
+extension TableProvider.Section: TableViewSectionArrayConvertible {
+    public func items() -> [TableProvider.Section] { [self] }
+}
+extension Array: TableViewSectionArrayConvertible where Element == TableProvider.Section {
+    public func items() -> [TableProvider.Section] { self }
+}
+
+@resultBuilder
+public struct TableViewSectionsArrayBuilder {
+    
+    public static func buildBlock(_ components: TableViewSectionArrayConvertible ...) -> TableViewSectionArrayConvertible { components.flatMap { $0.items() } }
+    
+    public static func buildIf(_ component: TableViewSectionArrayConvertible?) -> TableViewSectionArrayConvertible { component ?? [TableProvider.Section]() }
+    
+    public static func buildEither(first: TableViewSectionArrayConvertible) -> TableViewSectionArrayConvertible { first }
+    
+    public static func buildEither(second: TableViewSectionArrayConvertible) -> TableViewSectionArrayConvertible { second }
+    
+}
 
 public extension TableProvider {
-    func reloadData(with maker: @escaping (ItemsGenerator<TableProvider.Section>) -> Void, animation: UITableView.RowAnimation = .fade, otherAnimations: @escaping () -> Void = { }, completed: @escaping () -> Void = { }) {
-        self.reloadData(sections: List(maker), animation: animation, otherAnimations: otherAnimations, completed: completed)
-    }
-}
-
-public func Section(_ identifier: String, _ maker: (ItemsGenerator<CellProvider>) -> Void) -> TableProvider.Section {
-    return TableProvider.Section(identifier: identifier, cellProviders: List(maker))
-}
-
-public func List<Item>(_ maker: (ItemsGenerator<Item>) -> Void) -> [Item] {
-    let generator: ItemsGenerator<Item> = ItemsGenerator()
-    maker(generator)
-    return generator.items
-}
-
-public func If<Item>(_ expression: Bool, then: (ItemsGenerator<Item>) -> Void = { _ in }, `else`: (ItemsGenerator<Item>) -> Void = { _ in }) -> [Item] {
-    if expression {
-        return List(then)
-    } else {
-        return List(`else`)
-    }
-}
-
-public func Unwrap<Item, T>(_ value: T?, then: (ItemsGenerator<Item>, T) -> Void = { _, _ in }, `else`: (ItemsGenerator<Item>) -> Void = { _ in }) -> [Item] {
-    if let value = value {
-        let generator: ItemsGenerator<Item> = ItemsGenerator()
-        then(generator, value)
-        return generator.items
-    } else {
-        return List(`else`)
+    func reloadData(@TableViewSectionsArrayBuilder with maker: @escaping () -> TableViewSectionArrayConvertible, animation: UITableView.RowAnimation = .fade, otherAnimations: @escaping () -> Void = { }, completed: @escaping () -> Void = { }) {
+        self.reloadData(sections: maker().items(), animation: animation, otherAnimations: otherAnimations, completed: completed)
     }
 }
