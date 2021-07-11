@@ -6,42 +6,39 @@
 //  Copyright © 2019 Martin Lalev. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
-public protocol TableProviderScrollDelegate: class {
+public protocol TableProviderScrollDelegate: AnyObject {
     func scrollViewDidScroll(_ scrollView: UIScrollView)
 }
 
 public class TableProvider: NSObject {
     
-    public struct Section {
-        public let identifier: String
-        public let cellProviders: [CellProvider]
-    }
-
     private weak var scrollDelegate: TableProviderScrollDelegate?
-    private var sections: [Section] = []
+    private var sections: [TableSectionProvider] = []
     
     private weak var tableView: UITableView?
     
-    public func provide(for tableView: UITableView, scrollDelegate: TableProviderScrollDelegate? = nil) {
+    public func provide(for tableView: UITableView) {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.prefetchDataSource = self
         self.tableView = tableView
-        self.scrollDelegate = scrollDelegate
     }
     
+    public func assignScrollDelegate(to scrollDelegate: TableProviderScrollDelegate? = nil) {
+        self.scrollDelegate = scrollDelegate
+    }
+
     
     
     // MARK: - Private helpers
     
-    subscript(_ indexPath: IndexPath) -> CellProvider {
+    subscript(_ indexPath: IndexPath) -> TableCellProvider {
         return self[indexPath.section].cellProviders[indexPath.row]
     }
     
-    subscript(_ index: Int) -> Section {
+    subscript(_ index: Int) -> TableSectionProvider {
         return self.sections[index]
     }
 
@@ -49,7 +46,7 @@ public class TableProvider: NSObject {
     
     // MARK: - Reloading
     
-    public func reloadData(sections: [Section], animation: UITableView.RowAnimation = .fade, otherAnimations: @escaping () -> Void = { }, completed: @escaping () -> Void = { }) {
+    public func reloadData(sections: [TableSectionProvider], animation: UITableView.RowAnimation = .fade, otherAnimations: @escaping () -> Void = { }, completed: @escaping () -> Void = { }) {
         let old = self.sections.map { ($0.identifier, $0.cellProviders.map { $0.identifier }) }
         self.sections = sections
         let new = self.sections.map { ($0.identifier, $0.cellProviders.map { $0.identifier }) }

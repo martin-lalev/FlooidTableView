@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
 s.name         = "FlooidTableView"
-s.version      = "1.0.5"
+s.version      = "1.0.6"
 s.summary      = "Table view helper for animating changes and managing sections and cells."
 s.description  = "Table view helper for animating changes and managing sections and cells."
 s.homepage     = "http://github.com/martin-lalev/FlooidTableView"

@@ -1,20 +1,14 @@
 //
-//  CellProvider.swift
+//  TableCellProvider.swift
 //  FlooidTableView
 //
 //  Created by Martin Lalev on 13.06.18.
 //  Copyright © 2018 Martin Lalev. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
-public protocol IdentifiableCell: UITableViewCell {
-    static var reuseIdentifier: String { get }
-    static func register(in view: UITableView)
-}
-
-public class CellProvider {
+public struct TableCellProvider {
     
     public let identifier: String
     public let reuseIdentifier: String
@@ -39,7 +33,8 @@ public class CellProvider {
         self.prefetcher = prefetch
         self.cancelPrefetcher = cancelPrefetch
     }
-    public convenience init(identifier: String, reuseIdentifier: String, height: CGFloat, heightEstimation: ((UITableView) -> CGFloat)? = nil, willShow: @escaping (UITableViewCell)->Void = { _ in }, didHide: @escaping (UITableViewCell)->Void = { _ in }, prefetch: @escaping () -> Void = { }, cancelPrefetch: @escaping () -> Void = { }, setup: @escaping (UITableViewCell)->Void) {
+    
+    public init(identifier: String, reuseIdentifier: String, height: CGFloat, heightEstimation: ((UITableView) -> CGFloat)? = nil, willShow: @escaping (UITableViewCell)->Void = { _ in }, didHide: @escaping (UITableViewCell)->Void = { _ in }, prefetch: @escaping () -> Void = { }, cancelPrefetch: @escaping () -> Void = { }, setup: @escaping (UITableViewCell)->Void) {
         self.init(identifier: identifier, reuseIdentifier: reuseIdentifier, height: { _ in height }, heightEstimation: heightEstimation, willShow: willShow, didHide: didHide, prefetch: prefetch, cancelPrefetch: cancelPrefetch, setup: setup)
     }
 
@@ -71,4 +66,8 @@ public class CellProvider {
         self.cancelPrefetcher()
     }
     
+}
+
+extension TableCellProvider: Identifiable {
+    public var id: String { self.identifier }
 }
