@@ -46,32 +46,17 @@ public class TableProvider: NSObject {
     
     // MARK: - Reloading
     
-    private let lock = NSLock()
-
     public func reloadData(sections: [TableSectionProvider], animation: UITableView.RowAnimation = .fade, otherAnimations: @escaping () -> Void = { }, completed: @escaping () -> Void = { }) {
+        let old = self.sections.map { ($0.identifier, $0.cellProviders.map { $0.identifier }) }
+        self.sections = sections
+        let new = self.sections.map { ($0.identifier, $0.cellProviders.map { $0.identifier }) }
+        
         guard let tableView = self.tableView else {
             completed()
             return
         }
         
-        if sections.isEmpty {
-            let changes = TableChanges.make(currentSections: self.sections, updatedSections: sections)
-            self.sections = sections
-            self.update(tableView, with: changes, animation: animation, otherAnimations: otherAnimations, completed: completed)
-        } else {
-            DispatchQueue.global(qos: .userInteractive).async {
-                self.lock.lock()
-                let changes = TableChanges.make(currentSections: self.sections, updatedSections: sections)
-                DispatchQueue.main.async {
-                    self.sections = sections
-                    self.update(tableView, with: changes, animation: animation, otherAnimations: otherAnimations, completed: completed)
-                    self.lock.unlock()
-                }
-            }
-        }
-    }
-    private func update(_ tableView: UITableView, with changes: TableChanges, animation: UITableView.RowAnimation = .fade, otherAnimations: @escaping () -> Void = { }, completed: @escaping () -> Void = { }) {
-        tableView.update(with: animation, changes: changes, animations: {
+        tableView.update(with: animation, old: old, new: new, animations: {
             for indexPath in tableView.indexPathsForVisibleRows ?? [] {
                 if let cell = tableView.cellForRow(at: indexPath) {
                     self[indexPath].setup(cell)
@@ -80,15 +65,6 @@ public class TableProvider: NSObject {
             otherAnimations()
             
         }, completed)
-    }
-}
-
-extension TableChanges {
-    static func make(currentSections: [TableSectionProvider], updatedSections: [TableSectionProvider]) -> TableChanges {
-        return .make(
-            old: currentSections.map { ($0.identifier, $0.cellProviders.map { $0.identifier }) },
-            new: updatedSections.map { ($0.identifier, $0.cellProviders.map { $0.identifier }) }
-        )
     }
 }
 
