@@ -47,9 +47,9 @@ public class TableProvider: NSObject {
     // MARK: - Reloading
     
     public func reloadData(sections: [TableSectionProvider], animation: UITableView.RowAnimation = .fade, otherAnimations: @escaping () -> Void = { }, completed: @escaping () -> Void = { }) {
-        let old = self.sections.map { ($0.identifier, $0.cellProviders.map { $0.identifier }) }
+        let old = self.sections.map { $0.asDiffableSection() }
         self.sections = sections
-        let new = self.sections.map { ($0.identifier, $0.cellProviders.map { $0.identifier }) }
+        let new = self.sections.map { $0.asDiffableSection() }
         
         guard let tableView = self.tableView else {
             completed()
@@ -119,5 +119,15 @@ extension TableProvider: UITableViewDataSource, UITableViewDelegate, UITableView
 
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.scrollDelegate?.scrollViewDidScroll(scrollView)
+    }
+}
+
+private extension TableSectionProvider {
+    func asDiffableSection() -> DiffableTableSection {
+        DiffableTableSection(
+            identifier: self.identifier,
+            cellIdentifiers: self.cellProviders.map { $0.identifier },
+            heightIdentifiers: self.cellProviders.map { $0.heightIdentifier }
+        )
     }
 }

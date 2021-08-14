@@ -28,18 +28,20 @@ extension UITableView {
         
     }
     
-    func update(with animation: UITableView.RowAnimation, old: [(String, [String])], new: [(String, [String])], animations: @escaping () -> Void, _ completed: @escaping () -> Void = { }) {
+    func update(with animation: UITableView.RowAnimation, old: [DiffableTableSection], new: [DiffableTableSection], animations: @escaping () -> Void, _ completed: @escaping () -> Void = { }) {
+        guard old != new else { return completed() }
+        
         self.update(changes: {
             
-            let sectionsFrom = old.map { $0.0 }
-            let sectionsTo = new.map { $0.0 }
+            let sectionsFrom = old.map { $0.identifier }
+            let sectionsTo = new.map { $0.identifier }
 
             self.applyToSections(Changes.make(from: sectionsFrom, to: sectionsTo), with: animation)
             
             for sectionIdentifier in Set(sectionsTo).intersection(sectionsFrom) {
-                let sectionIndex = new.firstIndex(where: { $0.0 == sectionIdentifier })!
-                let cellsFrom = old.first(where: { $0.0 == sectionIdentifier })!.1
-                let cellsTo = new.first(where: { $0.0 == sectionIdentifier })!.1
+                let sectionIndex = new.firstIndex(where: { $0.identifier == sectionIdentifier })!
+                let cellsFrom = old.first(where: { $0.identifier == sectionIdentifier })!.cellIdentifiers
+                let cellsTo = new.first(where: { $0.identifier == sectionIdentifier })!.cellIdentifiers
                 
                 self.applyToCells(Changes.make(from: cellsFrom, to: cellsTo), at: sectionIndex, with: animation)
             }
@@ -58,6 +60,12 @@ extension UITableView {
         for move in changes.moved { self.moveRow(at: IndexPath(row: move.from, section: sectionIndex), to: IndexPath(row: move.to, section: sectionIndex)) }
     }
 
+}
+
+struct DiffableTableSection: Equatable {
+    let identifier: String
+    let cellIdentifiers: [String]
+    let heightIdentifiers: [String]
 }
 
 struct Changes {

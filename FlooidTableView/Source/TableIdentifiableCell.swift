@@ -17,6 +17,7 @@ public extension TableIdentifiableCell {
     static func makeCell(
         identifier: String,
         reuseIdentifier: String = Self.reuseIdentifier,
+        heightIdentifier: String? = nil,
         height: @escaping (UITableView) -> CGFloat,
         heightEstimation: ((UITableView) -> CGFloat)? = nil,
         willShow: @escaping (Self) -> Void = { _ in },
@@ -28,6 +29,7 @@ public extension TableIdentifiableCell {
         .init(
             identifier: identifier,
             reuseIdentifier: reuseIdentifier,
+            heightIdentifier: heightIdentifier,
             height: height,
             heightEstimation: heightEstimation,
             willShow: { cell in
@@ -46,8 +48,8 @@ public extension TableIdentifiableCell {
             }
         )
     }
-    static func makeCell(identifier: String, reuseIdentifier: String = Self.reuseIdentifier, height: CGFloat, heightEstimation: ((UITableView) -> CGFloat)? = nil, willShow: @escaping (Self)->Void = { _ in }, didHide: @escaping (Self)->Void = { _ in }, prefetch: @escaping () -> Void = { }, cancelPrefetch: @escaping () -> Void = { }, setup: @escaping (Self)->Void) -> TableCellProvider {
-        self.makeCell(identifier: identifier, reuseIdentifier: reuseIdentifier, height: { _ in height }, heightEstimation: heightEstimation, willShow: willShow, didHide: didHide, prefetch: prefetch, cancelPrefetch: cancelPrefetch, setup: setup)
+    static func makeCell(identifier: String, reuseIdentifier: String = Self.reuseIdentifier, heightIdentifier: String? = nil, height: CGFloat, heightEstimation: ((UITableView) -> CGFloat)? = nil, willShow: @escaping (Self)->Void = { _ in }, didHide: @escaping (Self)->Void = { _ in }, prefetch: @escaping () -> Void = { }, cancelPrefetch: @escaping () -> Void = { }, setup: @escaping (Self)->Void) -> TableCellProvider {
+        self.makeCell(identifier: identifier, reuseIdentifier: reuseIdentifier, heightIdentifier: heightIdentifier, height: { _ in height }, heightEstimation: heightEstimation, willShow: willShow, didHide: didHide, prefetch: prefetch, cancelPrefetch: cancelPrefetch, setup: setup)
     }
 }
 
