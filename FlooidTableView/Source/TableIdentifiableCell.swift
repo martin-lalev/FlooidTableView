@@ -55,12 +55,12 @@ public extension TableIdentifiableCell {
 
 extension UITableView {
 
-    open func register(_ cellTypes: [TableIdentifiableCell.Type] = []) {
+    public func register(_ cellTypes: [TableIdentifiableCell.Type] = []) {
         for cellType in cellTypes {
             cellType.register(in: self)
         }
     }
-    open func register(_ cellTypes: TableIdentifiableCell.Type ...) {
+    public func register(_ cellTypes: TableIdentifiableCell.Type ...) {
         self.register(cellTypes)
     }
 
